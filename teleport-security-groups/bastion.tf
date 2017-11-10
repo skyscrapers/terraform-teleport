@@ -15,21 +15,21 @@ resource "aws_security_group_rule" "teleport_auth_from_nodes" {
 }
 
 resource "aws_security_group_rule" "teleport_auth_from_proxy_self" {
-  type                     = "ingress"
-  from_port                = 3025
-  to_port                  = 3025
-  protocol                 = "tcp"
-  self = "true"
-  security_group_id        = "${aws_security_group.teleport_bastion.id}"
+  type              = "ingress"
+  from_port         = 3025
+  to_port           = 3025
+  protocol          = "tcp"
+  self              = "true"
+  security_group_id = "${aws_security_group.teleport_bastion.id}"
 }
 
 resource "aws_security_group_rule" "teleport_proxy_to_auth_self" {
-  type                     = "egress"
-  from_port                = 3025
-  to_port                  = 3025
-  protocol                 = "tcp"
-  self = "true"
-  security_group_id        = "${aws_security_group.teleport_bastion.id}"
+  type              = "egress"
+  from_port         = 3025
+  to_port           = 3025
+  protocol          = "tcp"
+  self              = "true"
+  security_group_id = "${aws_security_group.teleport_bastion.id}"
 }
 
 ########## Proxy related rules
@@ -89,20 +89,20 @@ resource "aws_security_group_rule" "teleport_proxy_to_nodes" {
 }
 
 resource "aws_security_group_rule" "teleport_proxy_to_nodes_self" {
-  type                     = "egress"
-  from_port                = 3022
-  to_port                  = 3022
-  protocol                 = "tcp"
-  self = "true"
-  security_group_id        = "${aws_security_group.teleport_bastion.id}"
+  type              = "egress"
+  from_port         = 3022
+  to_port           = 3022
+  protocol          = "tcp"
+  self              = "true"
+  security_group_id = "${aws_security_group.teleport_bastion.id}"
 }
 
 ############## Node related rules
 resource "aws_security_group_rule" "teleport_nodes_from_proxy_self" {
-  type                     = "ingress"
-  from_port                = 3022
-  to_port                  = 3022
-  protocol                 = "tcp"
-  self = "true"
-  security_group_id        = "${aws_security_group.teleport_bastion.id}"
+  type              = "ingress"
+  from_port         = 3022
+  to_port           = 3022
+  protocol          = "tcp"
+  self              = "true"
+  security_group_id = "${aws_security_group.teleport_bastion.id}"
 }
