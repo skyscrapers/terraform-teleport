@@ -12,7 +12,7 @@ Terraform module to provision Teleport related resources.
 ### Example
 ```
 module "teleport_iam_policy" {
-  source  = "github.com/skyscrapers/terraform-teleport/teleport-auth-iam-policy?ref=1.0.0"
+  source  = "github.com/skyscrapers/terraform-teleport//teleport-auth-iam-policy?ref=1.0.0"
   role_id = "${module.tools.iam_role_id}"
 }
 ```
@@ -34,7 +34,7 @@ It'll create three different security groups: `auth`, `proxy` and `node`
 ### Example
 ```
 module "security_groups_teleport" {
-  source = "github.com/skyscrapers/terraform-teleport/teleport-security-groups?ref=1.0.0"
+  source = "github.com/skyscrapers/terraform-teleport//teleport-security-groups?ref=1.0.0"
   vpc_id = "${module.vpc.vpc_id}"
 }
 ```
