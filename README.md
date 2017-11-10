@@ -20,15 +20,14 @@ module "teleport_iam_policy" {
 ## teleport-security-groups
 
 Creates the security groups needed by all Teleport services, and the rules needed by Teleport.
-It'll create three different security groups: `auth`, `proxy` and `node`
+It'll create two different security groups: `bastion` and `node`. Bastion contains all the rules for Teleport `proxy`, `auth` and `node` combined, to attach to a Teleport server; and the `node` security group is to attach the managed nodes.
 
 ### Available variables:
 * [`vpc_id`]: String(required): The VPC where to put the security groups.
 * [`cidr_blocks`]: List(optional): CIDR blocks from where to allow connections to the Teleport cluster. Defaults to ["0.0.0.0/0"]
 
 ### Output
- * [`auth_sg_id`]: String: Security Group id for auth.
- * [`proxy_sg_id`]: String: Security Group id for proxy.
+ * [`bastion_sg_id`]: String: Security Group id for the Teleport server (`proxy`, `auth` and `node`).
  * [`node_sg_id`]: String: Security Group id for node.
 
 ### Example
