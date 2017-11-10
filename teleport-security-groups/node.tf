@@ -4,7 +4,7 @@ resource "aws_security_group" "teleport_node" {
   vpc_id      = "${var.vpc_id}"
 }
 
-resource "aws_security_group_rule" "teleport_proxy_to_nodes" {
+resource "aws_security_group_rule" "teleport_nodes_from_proxy" {
   type                     = "ingress"
   from_port                = 3022
   to_port                  = 3022

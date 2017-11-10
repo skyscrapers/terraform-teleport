@@ -4,7 +4,7 @@ resource "aws_security_group" "teleport_proxy" {
   vpc_id      = "${var.vpc_id}"
 }
 
-resource "aws_security_group_rule" "teleport_ssh_world_to_proxy" {
+resource "aws_security_group_rule" "teleport_ssh_proxy_from_world" {
   type              = "ingress"
   from_port         = 3023
   to_port           = 3023
@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "teleport_ssh_world_to_proxy" {
   security_group_id = "${aws_security_group.teleport_proxy.id}"
 }
 
-resource "aws_security_group_rule" "teleport_reverse_ssh_world_to_proxy" {
+resource "aws_security_group_rule" "teleport_reverse_ssh_proxy_from_world" {
   type              = "ingress"
   from_port         = 3024
   to_port           = 3024
@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "teleport_reverse_ssh_world_to_proxy" {
   security_group_id = "${aws_security_group.teleport_proxy.id}"
 }
 
-resource "aws_security_group_rule" "teleport_https_world_to_proxy" {
+resource "aws_security_group_rule" "teleport_https_proxy_from_world" {
   type              = "ingress"
   from_port         = 3080
   to_port           = 3080
@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "teleport_https_world_to_proxy" {
 }
 
 # Used by letsencrypt to obtain a certificate
-resource "aws_security_group_rule" "teleport_http_world_to_proxy" {
+resource "aws_security_group_rule" "teleport_http_proxy_from_world" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80

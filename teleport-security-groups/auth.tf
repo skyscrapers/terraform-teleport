@@ -4,7 +4,7 @@ resource "aws_security_group" "teleport_auth" {
   vpc_id      = "${var.vpc_id}"
 }
 
-resource "aws_security_group_rule" "teleport_nodes_to_auth" {
+resource "aws_security_group_rule" "teleport_auth_from_nodes" {
   type                     = "ingress"
   from_port                = 3025
   to_port                  = 3025
@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "teleport_nodes_to_auth" {
   security_group_id        = "${aws_security_group.teleport_auth.id}"
 }
 
-resource "aws_security_group_rule" "teleport_proxy_to_auth" {
+resource "aws_security_group_rule" "teleport_auth_from_proxy" {
   type                     = "ingress"
   from_port                = 3025
   to_port                  = 3025
