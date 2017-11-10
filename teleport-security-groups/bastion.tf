@@ -61,10 +61,19 @@ resource "aws_security_group_rule" "teleport_https_proxy_from_world" {
 }
 
 # Used by letsencrypt to obtain a certificate
-resource "aws_security_group_rule" "teleport_http_proxy_from_world" {
+resource "aws_security_group_rule" "teleport_le_http_proxy_from_world" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.teleport_bastion.id}"
+}
+
+resource "aws_security_group_rule" "teleport_le_https_proxy_from_world" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.teleport_bastion.id}"
