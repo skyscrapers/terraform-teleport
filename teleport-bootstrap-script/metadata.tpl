@@ -8,7 +8,7 @@ set -e
 export ADVERTISE_IP="$(ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/')"
 
 ## Get instance ID (if possible)
-${include_instance_id == "true" ? "export INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
+${include_instance_id == "true" ? "export INSTANCE_ID=-$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
 
 ## Set the rest of the config
 export AUTH_TOKEN=${auth_token}
