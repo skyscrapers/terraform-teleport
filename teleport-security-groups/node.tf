@@ -13,6 +13,16 @@ resource "aws_security_group_rule" "teleport_nodes_from_proxy" {
   security_group_id        = "${aws_security_group.teleport_node.id}"
 }
 
+
+resource "aws_security_group_rule" "teleport_nodes_proxy_auth" {
+  type                     = "ingress"
+  from_port                = 3025
+  to_port                  = 3025
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.teleport_bastion.id}"
+  security_group_id        = "${aws_security_group.teleport_node.id}"
+}
+
 resource "aws_security_group_rule" "teleport_nodes_to_auth" {
   type                     = "egress"
   from_port                = 3025
