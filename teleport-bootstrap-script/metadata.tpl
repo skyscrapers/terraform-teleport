@@ -2,10 +2,21 @@
 
 set -e
 
+get_private_ip () {
+  PRIVATE_IP="$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)"
+  if [ $? != 0 ]; then
+    # hostname -I returns all IP addresses available in the server, grep will return the first private IP found
+    PRIVATE_IP="$(hostname -I | tr ' ' '\n' | grep -m 1 -E '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)')"
+  fi
+
+  echo $PRIVATE_IP
+  return 0
+}
+
 # Config /etc/teleport
 
 ## Get private IP for advertise_ip
-export ADVERTISE_IP="$(ip addr show eth0 | grep 'inet ' | awk '{print $2}' | cut -f1 -d'/')"
+export ADVERTISE_IP=$(get_private_ip)
 
 ## Get instance ID (if possible)
 ${include_instance_id == "true" ? "export INSTANCE_ID=-$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
