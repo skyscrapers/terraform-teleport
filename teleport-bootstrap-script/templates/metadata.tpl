@@ -26,6 +26,9 @@ echo "AUTH_TOKEN=${auth_token}" >> /etc/teleport
 echo "AUTH_SERVER=${auth_server}" >> /etc/teleport
 echo "NODENAME=${function}${project}${environment}$INSTANCE_ID" >> /etc/teleport
 
+# Reload systemd to activate teleport service
+sudo systemctl daemon-reload
+
 # Enable teleport service
 sudo systemctl enable teleport.service
 
