@@ -1,5 +1,5 @@
 data "template_file" "teleport_bootstrap_script" {
-  template = "${file("${path.module}/metadata.tpl")}"
+  template = "${file("${path.module}/templates/metadata.tpl")}"
 
   vars {
     function            = "${var.function}"
@@ -8,5 +8,29 @@ data "template_file" "teleport_bootstrap_script" {
     include_instance_id = "${var.include_instance_id}"
     auth_token          = "${var.auth_token}"
     auth_server         = "${var.auth_server}"
+  }
+}
+
+data "template_file" "teleport_service" {
+  template = "${file("${path.module}/templates/teleport.service")}"
+}
+
+data "template_file" "teleport_config" {
+  template = "${file("${path.module}/templates/teleport.yaml")}"
+}
+
+data "template_file" "teleport_service_cloudinit" {
+  template = "${file("${path.module}/templates/teleport.service.tpl")}"
+
+  vars {
+    teleport_service = "${indent(4,data.template_file.teleport_service.rendered)}"
+  }
+}
+
+data "template_file" "teleport_config_cloudinit" {
+  template = "${file("${path.module}/templates/teleport.yaml.tpl")}"
+
+  vars {
+    teleport_config = "${indent(4,data.template_file.teleport_config.rendered)}"
   }
 }

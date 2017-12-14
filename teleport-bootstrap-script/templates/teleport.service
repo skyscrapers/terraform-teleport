@@ -1,0 +1,12 @@
+[Unit]
+Description=Teleport SSH Service
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/teleport
+Type=simple
+Restart=on-failure
+ExecStart=/usr/local/bin/teleport start --config=/etc/teleport.yaml --nodename $NODENAME --advertise-ip $ADVERTISE_IP --auth-server $AUTH_SERVER --token $AUTH_TOKEN
+
+[Install]
+WantedBy=multi-user.target
