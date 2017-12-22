@@ -1,0 +1,26 @@
+[{
+    "name": "teleport-auth",
+    "image": "skyscrapers/teleport:${teleport_version}",
+    "essential": true,
+    "cpu": ${cpu},
+    "memory": ${memory},
+    "memoryReservation": ${memory_reservation},
+    "environment": [
+        { "name": "ENABLE_AUTH", "value": "yes" },
+        { "name": "ENABLE_PROXY", "value": "no" },
+        { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
+        { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
+        { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" }
+    ],
+    "portMappings": [{
+        "containerPort": 3025
+    }],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "${log_group}",
+            "awslogs-region": "${aws_region}",
+            "awslogs-stream-prefix": "teleport-auth"
+        }
+    }
+}]
