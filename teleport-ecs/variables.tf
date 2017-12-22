@@ -6,15 +6,15 @@ variable "project" {
 }
 
 variable "cpu" {
-  default = "512"
+  default = "128"
 }
 
 variable "memory" {
-  default = "1024"
+  default = "512"
 }
 
 variable "memory_reservation" {
-  default = "512"
+  default = "254"
 }
 
 variable "teleport_version" {
@@ -22,7 +22,7 @@ variable "teleport_version" {
 }
 
 variable "cluster_name" {
-    
+
 }
 
 variable "dynamodb_table" {
@@ -34,11 +34,11 @@ variable "dynamodb_region" {
 }
 
 variable "tokens" {
-    
+
 }
 
 variable "environment" {
-    
+
 }
 
 variable "vpc_id" {
@@ -46,11 +46,11 @@ variable "vpc_id" {
 }
 
 variable "domain_name" {
-    
+
 }
 
 variable "alb_listener_arn" {
-    
+
 }
 
 variable "nlb_arn" {
@@ -58,12 +58,12 @@ variable "nlb_arn" {
 }
 
 variable "nlb_private_arn" {
-    
+
 }
 
 variable "ecs_cluster" {
-  
-} 
+
+}
 
 variable "desired_count" {
   default = 1
