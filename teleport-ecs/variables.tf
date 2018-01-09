@@ -1,20 +1,26 @@
 variable "aws_region" {
+  description = "AWS region we are deploying in"
   default = "eu-west-1"
 }
 
 variable "project" {
+  description = "Project where this node belongs to, will be the second part of the node name. Defaults to ''"
+  default     = ""
 }
 
 variable "cpu" {
-  default = "128"
+  description = "The number of CPU units used by the task. It can be expressed as an integer using CPU units, for example 1024, or as a string using vCPUs, for example 1 vCPU or 1 vcpu, in a task definition but will be converted to an integer indicating the CPU units when the task definition is registered."
+  default     = "128"
 }
 
 variable "memory" {
-  default = "512"
+  description = "The amount of memory (in MiB) used by the task. It can be expressed as an integer using MiB, for example 1024, or as a string using GB, for example 1GB or 1 GB, in a task definition but will be converted to an integer indicating the MiB when the task definition is registered."
+  default     = "512"
 }
 
 variable "memory_reservation" {
-  default = "254"
+  description = "The soft limit (in MiB) of memory to reserve for the container. When system memory is under contention, Docker attempts to keep the container memory to this soft limit; however, your container can consume more memory when it needs to, up to either the hard limit specified with the memory parameter (if applicable), or all of the available memory on the container instance, whichever comes first."
+  default     = "254"
 }
 
 variable "teleport_version" {
@@ -23,7 +29,7 @@ variable "teleport_version" {
 }
 
 variable "cluster_name" {
-
+  description = "Name of the cluster"
 }
 
 variable "dynamodb_table" {
@@ -43,7 +49,8 @@ variable "tokens" {
 }
 
 variable "environment" {
-
+  description = "Environment where this node belongs to, will be the third part of the node name. Defaults to ''"
+  default     = ""
 }
 
 variable "vpc_id" {
