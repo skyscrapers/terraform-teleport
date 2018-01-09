@@ -8,15 +8,21 @@
     "environment": [
         { "name": "ENABLE_AUTH", "value": "yes" },
         { "name": "ENABLE_PROXY", "value": "no" },
+        { "name": "ENABLE_NODE", "value": "yes" },
         { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
         { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
         { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" },
         { "name": "TOKENS", "value": "${tokens}" },
         { "name": "LOG_SEVERITY", "value": "INFO" }
     ],
-    "portMappings": [{
+    "portMappings": [
+      {
         "containerPort": 3025
-    }],
+      },
+      {
+        "containerPort": 3022
+      }
+    ],
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
