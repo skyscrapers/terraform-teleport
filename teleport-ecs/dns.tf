@@ -1,16 +1,20 @@
 data "aws_route53_zone" "teleport" {
-  name         = "${var.domain_name}."
+  count = "${var.create_dns_record ? 1 : 0}"
+  name  = "${var.domain_name}."
 }
 
 data "aws_lb_listener" "alb" {
-  arn = "${var.alb_listener_arn}"
+  count = "${var.create_dns_record ? 1 : 0}"
+  arn   = "${var.alb_listener_arn}"
 }
 
 data "aws_lb" "alb" {
-  arn  = "${data.aws_lb_listener.alb.load_balancer_arn}"
+  count = "${var.create_dns_record ? 1 : 0}"
+  arn   = "${data.aws_lb_listener.alb.load_balancer_arn}"
 }
 
 resource "aws_route53_record" "teleport" {
+  count   = "${var.create_dns_record ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.teleport.zone_id}"
   name    = "teleport.${var.domain_name}"
   type    = "A"
