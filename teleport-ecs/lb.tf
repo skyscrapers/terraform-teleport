@@ -1,5 +1,5 @@
 module "target" {
-  source                    = "github.com/skyscrapers/terraform-loadbalancers//alb_rule_target?ref=5.0.3"
+  source                    = "github.com/skyscrapers/terraform-loadbalancers//alb_rule_target?ref=5.0.4"
   name                      = "teleport-web"
   environment               = "${var.environment}"
   project                   = "${var.project}"
@@ -9,6 +9,7 @@ module "target" {
   listener_condition_field  = "host-header"
   listener_condition_values = ["teleport.${var.domain_name}"]
   target_port               = "3080"
+  target_protocol           = "HTTPS"
   target_health_path        = "/web"
 
   tags = {
