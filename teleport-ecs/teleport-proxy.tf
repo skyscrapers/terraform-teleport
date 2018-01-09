@@ -17,8 +17,10 @@ data "template_file" "teleport_proxy" {
     memory_reservation = "${var.memory_reservation}"
     aws_region         = "${var.aws_region}"
     log_group          = "${aws_cloudwatch_log_group.teleport.id}"
+    cluster_name       = "${var.cluster_name}"
     teleport_version   = "${var.teleport_version}"
     auth_servers       = "${data.aws_lb.nlb_node.dns_name}:3025"
+    auth_token         = "${random_string.proxy_token.result}"
   }
 }
 
@@ -41,7 +43,7 @@ resource "aws_ecs_service" "teleport_proxy" {
     container_name   = "teleport-proxy"
     container_port   = "${local.ports[count.index]}"
   }
-  
+
   placement_strategy {
     type  = "spread"
     field = "attribute:ecs.availability-zone"

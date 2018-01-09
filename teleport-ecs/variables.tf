@@ -18,7 +18,7 @@ variable "memory_reservation" {
 }
 
 variable "teleport_version" {
-    default = "2.3.7"
+  default = "2.3.7"
 }
 
 variable "cluster_name" {
@@ -26,15 +26,16 @@ variable "cluster_name" {
 }
 
 variable "dynamodb_table" {
-    default = "main.teleport"
+  default = "main.teleport"
 }
 
 variable "dynamodb_region" {
-    default = "eu-west-1"
+  default = "eu-west-1"
 }
 
 variable "tokens" {
-
+  type    = "list"
+  default = []
 }
 
 variable "environment" {

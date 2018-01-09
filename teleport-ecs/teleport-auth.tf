@@ -5,6 +5,10 @@ resource "aws_ecs_task_definition" "teleport_auth" {
   task_role_arn         = "${aws_iam_role.teleport.arn}"
 }
 
+resource "random_string" "proxy_token" {
+  length  = 48
+  special = false
+}
 
 data "template_file" "teleport_auth" {
   template = "${file("${path.module}/task-definitions/teleport-auth.json")}"
@@ -19,6 +23,7 @@ data "template_file" "teleport_auth" {
     cluster_name       = "${var.cluster_name}"
     dynamodb_table     = "${var.dynamodb_table}.auth"
     dynamodb_region    = "${var.dynamodb_region}"
+    tokens             = "${join(" ", concat(var.tokens, list("proxy:${random_string.proxy_token.result}")))}"
   }
 }
 
@@ -33,7 +38,7 @@ resource "aws_ecs_service" "teleport_auth" {
     container_name   = "teleport-auth"
     container_port   = "3025"
   }
-  
+
   placement_strategy {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
