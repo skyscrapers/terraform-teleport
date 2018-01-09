@@ -66,7 +66,7 @@ variable "alb_listener_arn" {
 }
 
 variable "nlb_arn" {
-  description = "ARN for the NLB to create a listener for CLI and tunnel of Tunnelport"
+  description = "ARN for the NLB to create a listener for CLI and tunnel"
 }
 
 variable "nlb_private_arn" {
