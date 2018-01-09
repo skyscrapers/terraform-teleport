@@ -1,6 +1,7 @@
 resource "aws_ecs_task_definition" "teleport_proxy" {
-  family                = "teleport-proxy"
-  container_definitions = "${data.template_file.teleport_proxy.rendered}"
+  count                 = 3
+  family                = "teleport-proxy-${local.functions[count.index]}"
+  container_definitions = "${data.template_file.teleport_proxy.*.rendered[count.index]}"
   network_mode          = "bridge"
 }
 
@@ -9,6 +10,7 @@ data "aws_lb" "nlb_node" {
 }
 
 data "template_file" "teleport_proxy" {
+  count    = 3
   template = "${file("${path.module}/task-definitions/teleport-proxy.json")}"
 
   vars {
@@ -21,6 +23,7 @@ data "template_file" "teleport_proxy" {
     teleport_version   = "${var.teleport_version}"
     auth_servers       = "${data.aws_lb.nlb_node.dns_name}:3025"
     auth_token         = "${random_string.proxy_token.result}"
+    function           = "${local.functions[count.index]}"
   }
 }
 
@@ -35,7 +38,7 @@ resource "aws_ecs_service" "teleport_proxy" {
   count           = 3
   name            = "teleport-proxy-${local.functions[count.index]}"
   cluster         = "${var.ecs_cluster}"
-  task_definition = "${aws_ecs_task_definition.teleport_proxy.arn}"
+  task_definition = "${aws_ecs_task_definition.teleport_proxy.*.arn[count.index]}"
   desired_count   = "${var.desired_count}"
 
   load_balancer {

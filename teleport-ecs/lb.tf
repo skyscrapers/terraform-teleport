@@ -35,7 +35,7 @@ module "nlb_tunnel" {
   environment           = "${var.environment}"
   project               = "${var.project}"
   vpc_id                = "${var.vpc_id}"
-  name_prefix           = "cli"
+  name_prefix           = "tunnel"
   nlb_arn               = "${var.nlb_arn}"
   ingress_port          = "3024"
 
@@ -49,7 +49,7 @@ module "nlb_node" {
   environment           = "${var.environment}"
   project               = "${var.project}"
   vpc_id                = "${var.vpc_id}"
-  name_prefix           = "cli"
+  name_prefix           = "node"
   nlb_arn               = "${var.nlb_private_arn}"
   ingress_port          = "3025"
 

@@ -25,7 +25,7 @@
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${aws_region}",
-            "awslogs-stream-prefix": "teleport-proxy"
+            "awslogs-stream-prefix": "teleport-proxy-${function}"
         }
     }
 }]
