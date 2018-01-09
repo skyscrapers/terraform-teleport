@@ -18,7 +18,7 @@ variable "memory_reservation" {
 }
 
 variable "teleport_version" {
-    default = "3.5.2"
+    default = "2.3.7"
 }
 
 variable "cluster_name" {
