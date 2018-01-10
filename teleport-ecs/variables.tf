@@ -15,12 +15,12 @@ variable "cpu" {
 
 variable "memory" {
   description = "The amount of memory (in MiB) used by the task. It can be expressed as an integer using MiB, for example 1024, or as a string using GB, for example 1GB or 1 GB, in a task definition but will be converted to an integer indicating the MiB when the task definition is registered."
-  default     = "512"
+  default     = "128"
 }
 
 variable "memory_reservation" {
   description = "The soft limit (in MiB) of memory to reserve for the container. When system memory is under contention, Docker attempts to keep the container memory to this soft limit; however, your container can consume more memory when it needs to, up to either the hard limit specified with the memory parameter (if applicable), or all of the available memory on the container instance, whichever comes first."
-  default     = "254"
+  default     = "64"
 }
 
 variable "teleport_version" {
