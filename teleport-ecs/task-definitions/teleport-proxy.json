@@ -8,25 +8,33 @@
     "environment": [
         { "name": "ENABLE_AUTH", "value": "no" },
         { "name": "ENABLE_PROXY", "value": "yes" },
+        { "name": "ENABLE_NODE", "value": "no" },
         { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
         { "name": "AUTH_SERVERS", "value": "${auth_servers}" },
         { "name": "AUTH_TOKEN", "value": "${auth_token}" },
         { "name": "LOG_SEVERITY", "value": "INFO" },
         { "name": "ADVERTISE_EC2_IP", "value": "no" }
     ],
-    "portMappings": [{
-        "containerPort": 3023
-    }, {
-        "containerPort": 3024
-    }, {
-        "containerPort": 3080
-    }],
+    "portMappings": [
+      {
+        "containerPort": 3023,
+        "hostPort": 3023
+      },
+      {
+        "containerPort": 3024,
+        "hostPort": 3024
+      },
+      {
+        "containerPort": 3080,
+        "hostPort": 3080
+      }
+    ],
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${aws_region}",
-            "awslogs-stream-prefix": "teleport-proxy-${function}"
+            "awslogs-stream-prefix": "teleport-proxy"
         }
     }
 }]

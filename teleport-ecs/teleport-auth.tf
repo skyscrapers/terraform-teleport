@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "teleport_auth" {
-  family                = "teleport"
+  family                = "teleport-auth"
   container_definitions = "${data.template_file.teleport_auth.rendered}"
   network_mode          = "bridge"
   task_role_arn         = "${aws_iam_role.teleport.arn}"
@@ -23,7 +23,8 @@ data "template_file" "teleport_auth" {
     cluster_name       = "${var.cluster_name}"
     dynamodb_table     = "${var.dynamodb_table}.auth"
     dynamodb_region    = "${var.dynamodb_region}"
-    tokens             = "${join(" ", concat(var.tokens, list("proxy:${random_string.proxy_token.result}")))}"
+    auth_token         = "${random_string.proxy_token.result}"
+    tokens             = "${join(" ", concat(var.tokens, list("proxy,node:${random_string.proxy_token.result}")))}"
   }
 }
 
@@ -31,10 +32,10 @@ resource "aws_ecs_service" "teleport_auth" {
   name            = "teleport-auth"
   cluster         = "${var.ecs_cluster}"
   task_definition = "${aws_ecs_task_definition.teleport_auth.arn}"
-  desired_count   = "${var.desired_count}"
+  desired_count   = "1"
 
   load_balancer {
-    target_group_arn = "${module.nlb_node.target_group_arn}"
+    target_group_arn = "${module.nlb_auth.target_group_arn}"
     container_name   = "teleport-auth"
     container_port   = "3025"
   }

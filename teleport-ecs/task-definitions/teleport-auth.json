@@ -10,6 +10,8 @@
         { "name": "ENABLE_PROXY", "value": "no" },
         { "name": "ENABLE_NODE", "value": "yes" },
         { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
+        { "name": "AUTH_SERVERS", "value": "127.0.0.1:3025" },
+        { "name": "AUTH_TOKEN", "value": "${auth_token}" },
         { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
         { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" },
         { "name": "TOKENS", "value": "${tokens}" },

@@ -1,6 +1,6 @@
 variable "aws_region" {
   description = "AWS region we are deploying in"
-  default = "eu-west-1"
+  default     = "eu-west-1"
 }
 
 variable "project" {
@@ -25,7 +25,7 @@ variable "memory_reservation" {
 
 variable "teleport_version" {
   description = "Teleport version you want to install"
-  default     = "2.3.7"
+  default     = "2.4.0"
 }
 
 variable "cluster_name" {
@@ -61,14 +61,6 @@ variable "domain_name" {
   description = "Domain name of where we want to reach our cluster. Example can be `company.com`"
 }
 
-variable "alb_listener_arn" {
-  description = "ARN for the ALB listener, this will be used to add a rule to for the Teleport web part"
-}
-
-variable "nlb_arn" {
-  description = "ARN for the NLB to create a listener for CLI and tunnel"
-}
-
 variable "nlb_private_arn" {
   description = "ARN for the private NLB to create a listener for the Node auth containers"
 }
@@ -77,12 +69,35 @@ variable "ecs_cluster" {
   description = "Name of the ECS cluster"
 }
 
-variable "desired_count" {
-  description = "Desired amount of containers we want to have running of each Teleport component"
-  default     = 1
-}
-
 variable "create_dns_record" {
   description = "Create DNS records to reach teleport"
   default     = "true"
+}
+
+variable "elb_subnets" {
+  description = "Subnets where to deploy the Teleport ELB"
+  type        = "list"
+}
+
+variable "web_ssl_certificate_arn" {
+  description = "ARN of the SSL certificate to use for the Teleport ELB"
+}
+
+variable "web_allowed_cidr_blocks" {
+  description = "CIDR blocks that are allowed to access the web interface of the proxy server"
+  default     = ["0.0.0.0/0"]
+}
+
+variable "cli_allowed_cidr_blocks" {
+  description = "CIDR blocks that are allowed to access the cli interface of the proxy server"
+  default     = ["0.0.0.0/0"]
+}
+
+variable "tunnel_allowed_cidr_blocks" {
+  description = "CIDR blocks that are allowed to access the reverse tunnel interface of the proxy server"
+  default     = ["0.0.0.0/0"]
+}
+
+variable "ecs_instances_sg_id" {
+  description = "Security group ID of the backend ECS instances running Teleport"
 }

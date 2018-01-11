@@ -19,7 +19,7 @@ EOF
 }
 
 
-module "iam_policy" { 
-    source  = "../teleport-auth-iam-policy"
-    role_id = "${aws_iam_role.teleport.id}"  
+module "iam_policy" {
+  source  = "../teleport-auth-iam-policy"
+  role_id = "${aws_iam_role.teleport.id}"  
 }
