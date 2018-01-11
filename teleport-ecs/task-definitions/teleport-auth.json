@@ -20,7 +20,8 @@
         "containerPort": 3025
       },
       {
-        "containerPort": 3022
+        "containerPort": 3022,
+        "hostPort": 3022
       }
     ],
     "logConfiguration": {
@@ -30,5 +31,10 @@
             "awslogs-region": "${aws_region}",
             "awslogs-stream-prefix": "teleport-auth"
         }
-    }
+    },
+    "placementConstraints": [
+      {
+        "type": "distinctInstance"
+      }
+    ]
 }]
