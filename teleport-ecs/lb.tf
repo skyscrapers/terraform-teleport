@@ -1,5 +1,5 @@
 module "target" {
-  source                    = "github.com/skyscrapers/terraform-loadbalancers//alb_rule_target?ref=5.0.4"
+  source                    = "github.com/skyscrapers/terraform-loadbalancers//alb_rule_target?ref=5.1.0"
   name                      = "teleport-web"
   environment               = "${var.environment}"
   project                   = "${var.project}"
@@ -46,7 +46,7 @@ module "nlb_tunnel" {
 }
 
 module "nlb_node" {
-  source                = "github.com/skyscrapers/terraform-loadbalancers//nlb_listener?ref=5.0.3"
+  source                = "github.com/skyscrapers/terraform-loadbalancers//nlb_listener?ref=5.1.1"
   environment           = "${var.environment}"
   project               = "${var.project}"
   vpc_id                = "${var.vpc_id}"
