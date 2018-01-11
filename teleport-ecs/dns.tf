@@ -31,7 +31,7 @@ resource "aws_route53_record" "teleport" {
   }
 }
 
-resource "aws_route53_record" "teleport" {
+resource "aws_route53_record" "teleport_tsh" {
   count   = "${var.create_dns_record ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.teleport.zone_id}"
   name    = "tsh.${var.domain_name}"
