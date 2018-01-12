@@ -19,7 +19,8 @@
     ],
     "portMappings": [
       {
-        "containerPort": 3025
+        "containerPort": 3025,
+        "hostPort": 3025
       },
       {
         "containerPort": 3022,
