@@ -25,6 +25,7 @@ data "template_file" "teleport_auth" {
     dynamodb_region    = "${var.dynamodb_region}"
     auth_token         = "${random_string.proxy_token.result}"
     tokens             = "${join(" ", concat(var.tokens, list("proxy,node:${random_string.proxy_token.result}")))}"
+    log_severity       = "${var.teleport_log_severity}"
   }
 }
 

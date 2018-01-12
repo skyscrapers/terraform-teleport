@@ -15,7 +15,7 @@
         { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
         { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" },
         { "name": "TOKENS", "value": "${tokens}" },
-        { "name": "LOG_SEVERITY", "value": "INFO" }
+        { "name": "LOG_SEVERITY", "value": "${log_severity}" }
     ],
     "portMappings": [
       {

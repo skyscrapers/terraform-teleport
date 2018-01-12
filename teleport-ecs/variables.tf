@@ -101,3 +101,8 @@ variable "tunnel_allowed_cidr_blocks" {
 variable "ecs_instances_sg_id" {
   description = "Security group ID of the backend ECS instances running Teleport"
 }
+
+variable "teleport_log_severity" {
+  description = "Logging configuration for Teleport, possible severity values are `INFO`, `WARN` and `ERROR`. Defaults to `ERROR`"
+  default     = "ERROR"
+}

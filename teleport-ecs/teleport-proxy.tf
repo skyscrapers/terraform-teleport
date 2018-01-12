@@ -21,6 +21,7 @@ data "template_file" "teleport_proxy" {
     teleport_version   = "${var.teleport_version}"
     auth_servers       = "${data.aws_lb.nlb_node.dns_name}:3025"
     auth_token         = "${random_string.proxy_token.result}"
+    log_severity       = "${var.teleport_log_severity}"
   }
 }
 

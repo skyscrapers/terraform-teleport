@@ -12,7 +12,7 @@
         { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
         { "name": "AUTH_SERVERS", "value": "${auth_servers}" },
         { "name": "AUTH_TOKEN", "value": "${auth_token}" },
-        { "name": "LOG_SEVERITY", "value": "INFO" },
+        { "name": "LOG_SEVERITY", "value": "${log_severity}" },
         { "name": "ADVERTISE_EC2_IP", "value": "no" }
     ],
     "portMappings": [
