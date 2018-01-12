@@ -38,9 +38,9 @@ resource "aws_elb" "proxy" {
 
   listener {
     instance_port     = "3080"
-    instance_protocol = "https"
+    instance_protocol = "ssl"
     lb_port           = "443"
-    lb_protocol       = "https"
+    lb_protocol       = "ssl"
     ssl_certificate_id = "${var.web_ssl_certificate_arn}"
   }
 
