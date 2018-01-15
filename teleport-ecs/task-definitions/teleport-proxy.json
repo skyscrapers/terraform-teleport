@@ -6,14 +6,14 @@
     "memory": ${memory},
     "memoryReservation": ${memory_reservation},
     "environment": [
-        { "name": "ENABLE_AUTH", "value": "no" },
-        { "name": "ENABLE_PROXY", "value": "yes" },
-        { "name": "ENABLE_NODE", "value": "no" },
-        { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
-        { "name": "AUTH_SERVERS", "value": "${auth_servers}" },
-        { "name": "AUTH_TOKEN", "value": "${auth_token}" },
-        { "name": "LOG_SEVERITY", "value": "${log_severity}" },
-        { "name": "ADVERTISE_EC2_IP", "value": "no" }
+      { "name": "ENABLE_AUTH", "value": "no" },
+      { "name": "ENABLE_PROXY", "value": "yes" },
+      { "name": "ENABLE_NODE", "value": "no" },
+      { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
+      { "name": "AUTH_SERVERS", "value": "${auth_servers}" },
+      { "name": "AUTH_TOKEN", "value": "${auth_token}" },
+      { "name": "LOG_SEVERITY", "value": "${log_severity}" },
+      { "name": "ADVERTISE_EC2_IP", "value": "no" }
     ],
     "portMappings": [
       {
@@ -30,16 +30,11 @@
       }
     ],
     "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-            "awslogs-group": "${log_group}",
-            "awslogs-region": "${aws_region}",
-            "awslogs-stream-prefix": "teleport-proxy"
-        }
-    },
-    "placementConstraints": [
-      {
-        "type": "distinctInstance"
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "teleport-proxy"
       }
-    ]
+    }
 }]

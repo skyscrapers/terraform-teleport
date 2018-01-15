@@ -36,4 +36,8 @@ resource "aws_ecs_service" "teleport_proxy" {
     container_name = "teleport-proxy"
     container_port = "3080"
   }
+
+  placement_constraints {
+    type = "distinctInstance"
+  }
 }
