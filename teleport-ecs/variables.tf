@@ -10,7 +10,7 @@ variable "project" {
 
 variable "cpu" {
   description = "The number of CPU units used by the Teleport task. It can be expressed as an integer using CPU units, for example 1024, or as a string using vCPUs, for example 1 vCPU or 1 vcpu, in a task definition but will be converted to an integer indicating the CPU units when the task definition is registered."
-  default     = "128"
+  default     = "256"
 }
 
 variable "memory" {
