@@ -18,8 +18,9 @@ resource "aws_iam_role" "teleport" {
 EOF
 }
 
-
 module "iam_policy" {
-  source  = "../teleport-auth-iam-policy"
-  role_id = "${aws_iam_role.teleport.id}"  
+  source          = "../teleport-auth-iam-policy"
+  role_id         = "${aws_iam_role.teleport.id}"
+  dynamodb_table  = "${var.dynamodb_table}"
+  dynamodb_region = "${var.dynamodb_region}"
 }

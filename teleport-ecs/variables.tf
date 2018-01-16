@@ -49,7 +49,7 @@ variable "cluster_name" {
 
 variable "dynamodb_table" {
   description = "Which dynamodb table does teleport need, teleport will create this table for you. You don't need to define anything in Terraform"
-  default     = "main.teleport"
+  default     = "main.teleport.auth"
 }
 
 variable "dynamodb_region" {

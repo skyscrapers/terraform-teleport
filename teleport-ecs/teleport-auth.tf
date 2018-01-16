@@ -24,7 +24,7 @@ data "template_file" "teleport_auth" {
     log_group                  = "${aws_cloudwatch_log_group.teleport.id}"
     teleport_version           = "${var.teleport_version}"
     cluster_name               = "${var.cluster_name}"
-    dynamodb_table             = "${var.dynamodb_table}.auth"
+    dynamodb_table             = "${var.dynamodb_table}"
     dynamodb_region            = "${var.dynamodb_region}"
     auth_token                 = "${random_string.proxy_token.result}"
     tokens                     = "${join(" ", concat(var.tokens, list("proxy,node:${random_string.proxy_token.result}")))}"
