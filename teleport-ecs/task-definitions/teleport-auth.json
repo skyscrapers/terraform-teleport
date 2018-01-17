@@ -1,0 +1,40 @@
+[{
+    "name": "teleport-auth",
+    "image": "skyscrapers/teleport:${teleport_version}",
+    "essential": true,
+    "cpu": ${cpu},
+    "memory": ${memory},
+    "memoryReservation": ${memory_reservation},
+    "environment": [
+        { "name": "ENABLE_AUTH", "value": "yes" },
+        { "name": "ENABLE_PROXY", "value": "no" },
+        { "name": "ENABLE_NODE", "value": "yes" },
+        { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
+        { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
+        { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" },
+        { "name": "TOKENS", "value": "${tokens}" },
+        { "name": "LOG_SEVERITY", "value": "INFO" }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 3025
+      },
+      {
+        "containerPort": 3022,
+        "hostPort": 3022
+      }
+    ],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "${log_group}",
+            "awslogs-region": "${aws_region}",
+            "awslogs-stream-prefix": "teleport-auth"
+        }
+    },
+    "placementConstraints": [
+      {
+        "type": "distinctInstance"
+      }
+    ]
+}]
