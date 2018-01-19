@@ -79,7 +79,7 @@ module "teleport_bootstrap_script" {
 }
 ```
 
-### teleport-ecs_cluster
+## teleport-ecs_cluster
 
 This module will deploy Teleport on ECS. This takes care of the auth and proxy components. All components are exposed through an public ALB (web), public NLB (tunnel/cli) and private NLB (node). An initial user is created so you can logon and start creating users.
 
