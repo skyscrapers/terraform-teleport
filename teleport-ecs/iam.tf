@@ -1,5 +1,5 @@
 resource "aws_iam_role" "teleport" {
-  name = "teleport-task-role"
+  name_prefix = "teleport-task-${var.project}-"
 
   assume_role_policy = <<EOF
 {
