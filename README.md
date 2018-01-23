@@ -5,6 +5,8 @@ Terraform module to provision Teleport related resources.
 
 ### Available variables:
 * [`role_id`]: String(required): IAM role ID where to attach the Teleport policy.
+* [`dynamodb_table`]: String(required): Name of the DynamoDB table.
+* [`dynamodb_region`]: String(optional): Region of the DynamoDB table. Defaults to `eu-west-1`
 
 ### Output
 -
@@ -12,8 +14,9 @@ Terraform module to provision Teleport related resources.
 ### Example
 ```
 module "teleport_iam_policy" {
-  source  = "github.com/skyscrapers/terraform-teleport//teleport-auth-iam-policy?ref=1.0.0"
-  role_id = "${module.tools.iam_role_id}"
+  source         = "github.com/skyscrapers/terraform-teleport//teleport-auth-iam-policy?ref=2.3.0"
+  role_id        = "${module.tools.iam_role_id}"
+  dynamodb_table = "main.teleport.auth"
 }
 ```
 

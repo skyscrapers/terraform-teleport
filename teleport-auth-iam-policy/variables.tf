@@ -8,4 +8,5 @@ variable "dynamodb_table" {
 
 variable "dynamodb_region" {
   description = "Region of the DynamoDB table"
+  default     = "eu-west-1"
 }
