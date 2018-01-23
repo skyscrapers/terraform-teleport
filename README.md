@@ -90,6 +90,8 @@ These are the different ports that Teleport exposes, and the LB that they are at
 - `proxy` port 3024: Used for other Teleport clusters to open a reverse tunnel (trusted clusters). Mapped to the same port in the public ELB.
 - `proxy` port 3080: Used to serve the Web UI. Mapped to port 443 in the public ELB.
 
+Audit logs generated in the `auth` server will be shipped to CloudWatch logs, it'll create a new log group named `"teleport_logs_${var.environment}_${var.project}"`.
+
 ### Available variables:
 * [`cluster_name`]: String(required): Name of the cluster.
 * [`domain_name`]: String(required): Domain name of where we want to reach our cluster. Example can be `company.com`
