@@ -100,10 +100,9 @@ Audit logs generated in the `auth` server will be shipped to CloudWatch logs, it
 * [`domain_name`]: String(required): Domain name of where we want to reach our cluster. Example can be `company.com`
 * [`nlb_private_arn`]: String(required): ARN for the private NLB to create a listener for the Node `auth` containers
 * [`vpc_id`]: String(required): VPC ID of where we want to deploy Teleport in
-* [`aws_region`]: String(optional): AWS region where the CloudWatch logs are located. Defaults to eu-west-1
+* [`aws_region`]: String(optional): AWS region where the CloudWatch logs are going to be shipped, and where the DynamoDB table is going to be created. Defaults to eu-west-1
 * [`cpu`]: Integer(optional): The number of CPU units used by the task. It can be expressed as an integer using CPU units, for example 1024, or as a string using vCPUs, for example 1 vCPU or 1 vcpu, in a task definition but will be converted to an integer indicating the CPU units when the task definition is registered. Defaults to 128.
 * [`dynamodb_table`]: String(optional): Which DynamoDB table does teleport need, teleport will create this table for you. You don't need to define anything in Terraform. Defaults to main.teleport
-* [`dynamodb_region`]: String(optional): In which region does the DynamoDB table need to be created. Defaults to eu-west-1
 * [`environment`]: String(optional): Environment where this node belongs to, will be the third part of the node name. Defaults to ''
 * [`memory`]: Integer(optional): The amount of memory (in MiB) used by the task. It can be expressed as an integer using MiB, for example 1024, or as a string using GB, for example 1GB or 1 GB, in a task definition but will be converted to an integer indicating the MiB when the task definition is registered. Defaults to 128
 * [`memory_reservation`]: Integer(optional): The soft limit (in MiB) of memory to reserve for the container. When system memory is under contention, Docker attempts to keep the container memory to this soft limit; however, your container can consume more memory when it needs to, up to either the hard limit specified with the memory parameter (if applicable), or all of the available memory on the container instance, whichever comes first. Defaults to 64

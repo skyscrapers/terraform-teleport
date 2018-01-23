@@ -1,5 +1,5 @@
 variable "aws_region" {
-  description = "AWS region we are deploying in"
+  description = "AWS region where the CloudWatch logs are going to be shipped, and where the DynamoDB table is going to be created. Defaults to eu-west-1"
   default     = "eu-west-1"
 }
 
@@ -50,11 +50,6 @@ variable "cluster_name" {
 variable "dynamodb_table" {
   description = "Which dynamodb table does teleport need, teleport will create this table for you. You don't need to define anything in Terraform"
   default     = "main.teleport.auth"
-}
-
-variable "dynamodb_region" {
-  description = "In which region does the dynamodb table need to be created"
-  default     = "eu-west-1"
 }
 
 variable "tokens" {

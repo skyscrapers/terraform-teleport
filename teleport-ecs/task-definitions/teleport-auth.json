@@ -12,7 +12,7 @@
       { "name": "ENABLE_NODE", "value": "no" },
       { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
       { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
-      { "name": "DYNAMODB_REGION", "value": "${dynamodb_region}" },
+      { "name": "DYNAMODB_REGION", "value": "${aws_region}" },
       { "name": "TOKENS", "value": "${tokens}" },
       { "name": "LOG_SEVERITY", "value": "${log_severity}" },
       { "name": "CREATE_ADMIN_USER", "value": "no" },
