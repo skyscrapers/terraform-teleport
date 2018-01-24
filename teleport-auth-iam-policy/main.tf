@@ -1,32 +1,35 @@
 resource "aws_iam_role_policy" "policy" {
-  role = "${var.role_id}"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllAPIActionsOnTeleportAuth",
-      "Effect": "Allow",
-      "Action": "dynamodb:*",
-      "Resource": "arn:aws:dynamodb:*:*:table/*teleport.auth"
-    },
-    {
-      "Sid": "CloudWatchLogsAccess",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:log-group:teleport_audit_log",
-        "arn:aws:logs:*:*:log-group:teleport_audit_log:*"
-      ]
-    }
-  ]
+  role   = "${var.role_id}"
+  policy = "${data.aws_iam_policy_document.teleport.json}"
 }
-EOF
+
+data "aws_iam_policy_document" "teleport" {
+  statement {
+    sid = "AllAPIActionsOnTeleportAuth"
+
+    actions = [
+      "dynamodb:*",
+    ]
+
+    resources = [
+      "arn:aws:dynamodb:${var.dynamodb_region}:*:table/${var.dynamodb_table}",
+    ]
+  }
+
+  statement {
+    sid = "CloudWatchLogsAccess"
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+    ]
+
+    resources = [
+      "arn:aws:logs:*:*:log-group:teleport_audit_log",
+      "arn:aws:logs:*:*:log-group:teleport_audit_log:*",
+    ]
+  }
 }

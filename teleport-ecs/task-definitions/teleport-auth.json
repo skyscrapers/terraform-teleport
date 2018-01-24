@@ -1,0 +1,51 @@
+[
+  {
+    "name": "teleport-auth",
+    "image": "skyscrapers/teleport:${teleport_version}",
+    "essential": true,
+    "cpu": ${cpu},
+    "memory": ${memory},
+    "memoryReservation": ${memory_reservation},
+    "environment": [
+      { "name": "ENABLE_AUTH", "value": "yes" },
+      { "name": "ENABLE_PROXY", "value": "no" },
+      { "name": "ENABLE_NODE", "value": "no" },
+      { "name": "CLUSTER_NAME", "value": "${cluster_name}" },
+      { "name": "DYNAMODB_TABLE", "value": "${dynamodb_table}" },
+      { "name": "DYNAMODB_REGION", "value": "${aws_region}" },
+      { "name": "TOKENS", "value": "${tokens}" },
+      { "name": "LOG_SEVERITY", "value": "${log_severity}" },
+      { "name": "CREATE_ADMIN_USER", "value": "no" },
+      { "name": "ADVERTISE_EC2_IP", "value": "no" }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 3025,
+        "hostPort": 3025
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "teleport-auth"
+      }
+    }
+  },
+  {
+    "name": "cloudwatch-logs",
+    "image": "skyscrapers/cloudwatch-logs",
+    "command": ["/var/lib/teleport/log/*.log:teleport_audit_log"],
+    "essential": true,
+    "cpu": ${cw_logs_cpu},
+    "memory": ${cw_logs_memory},
+    "memoryReservation": ${cw_logs_memory_reservation},
+    "volumesFrom": [
+      {
+        "SourceContainer": "teleport-auth",
+        "ReadOnly": true
+      }
+    ]
+  }
+]
