@@ -4,6 +4,8 @@ runcmd:
   - [ systemctl, enable, teleport.service ]
   - [ certbot, certonly, -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
   - [ systemctl, start, teleport.service ]
+  - [ tar, xvf, /root/AgentDependencies.tar.gz, -C, /tmp/ ]
+  - [ python , /root/awslogs-agent-setup.py, -n, --region, ${teleport_dynamodb_region}, --dependency-path, /tmp/AgentDependencies, -c, /etc/awslogs/awslogs.conf ]
 
 write_files:
 - content: |
@@ -160,3 +162,14 @@ write_files:
     systemctl restart teleport.service
   path: /usr/local/bin/teleport_enable_tls.sh
   permissions: '0755'
+- content: |
+    [general]
+    state_file = /var/awslogs/state/agent-state
+    [teleport_audit_log]
+    datetime_format = %b %d %H:%M:%S
+    file = /var/lib/teleport/log/*.log
+    buffer_duration = 5000
+    log_stream_name = {instance_id}
+    initial_position = start_of_file
+    log_group_name = teleport_audit_log
+  path: /etc/awslogs/awslogs.conf
