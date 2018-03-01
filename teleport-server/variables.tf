@@ -1,26 +1,26 @@
-variable "project" {}
+variable "project" {
+  description = "A project where this setup belongs to. Only for naming reasons."
+}
 
-description = "A project where this setup belongs to. Only for naming reasons."
+variable "environment" {
+  description = "The environment where this setup belongs to. Only for naming reasons."
+}
 
-variable "environment" {}
+variable "subnet_id" {
+  description = "Subnet id where the EC2 instance will be deployed."
+}
 
-description = "The environment where this setup belongs to. Only for naming reasons."
+variable "key_name" {
+  description = "SSH key name for the EC2 instance."
+}
 
-variable "subnet_id" {}
+variable "ami_id" {
+  description = "AMI id for the EC2 instance."
+}
 
-description = "Subnet id where the EC2 instance will be deployed."
-
-variable "key_name" {}
-
-description = "SSH key name for the EC2 instance."
-
-variable "ami_id" {}
-
-description = "AMI id for the EC2 instance."
-
-variable "r53_zone" {}
-
-description = "The Route53 zone where to add the Teleport DNS record."
+variable "r53_zone" {
+  description = "The Route53 zone where to add the Teleport DNS record."
+}
 
 variable "teleport_cluster_name" {
   description = "DNS subdomain that will be created for the teleport server."
