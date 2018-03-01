@@ -52,5 +52,6 @@ data "template_file" "cloudinit_teleport" {
     teleport_auth_tokens       = "${length(var.teleport_auth_tokens) > 0 ? indent(6, join("\n", concat(list("tokens:"), formatlist("- %s", var.teleport_auth_tokens)))) : ""}"
     teleport_cluster_name      = "${local.teleport_cluster_name}"
     teleport_session_recording = "${var.teleport_session_recording}"
+    acme_server                = "${var.acme_server}"
   }
 }

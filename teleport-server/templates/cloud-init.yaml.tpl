@@ -2,7 +2,7 @@
 
 runcmd:
   - [ systemctl, enable, teleport.service ]
-  - [ certbot, certonly, -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
+  - [ certbot, certonly, --server, "${acme_server}", -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
   - [ systemctl, start, teleport.service ]
   - [ tar, xvf, /root/AgentDependencies.tar.gz, -C, /tmp/ ]
   - [ python , /root/awslogs-agent-setup.py, -n, --region, ${teleport_dynamodb_region}, --dependency-path, /tmp/AgentDependencies, -c, /etc/awslogs/awslogs.conf ]

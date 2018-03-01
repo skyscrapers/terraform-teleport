@@ -71,3 +71,7 @@ variable "root_vl_size" {
 variable "root_vl_delete" {
   default = "true"
 }
+
+variable "acme_server" {
+  default = "https://acme-v01.api.letsencrypt.org/directory"
+}
