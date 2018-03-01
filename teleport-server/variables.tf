@@ -75,3 +75,7 @@ variable "root_vl_delete" {
 variable "acme_server" {
   default = "https://acme-v01.api.letsencrypt.org/directory"
 }
+
+variable "teleport_subdomain" {
+  default = "teleport"
+}

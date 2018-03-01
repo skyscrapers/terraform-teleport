@@ -1,5 +1,5 @@
 locals {
-  teleport_domain_name    = "teleport1.${var.r53_zone}"
+  teleport_domain_name    = "${var.teleport_subdomain}.${var.r53_zone}"
   teleport_dynamodb_table = "${length(var.teleport_dynamodb_table) > 0 ? var.teleport_dynamodb_table : local.teleport_domain_name}"
   teleport_cluster_name   = "${length(var.teleport_cluster_name) > 0 ? var.teleport_cluster_name : local.teleport_domain_name}"
 }
