@@ -1,7 +1,7 @@
 resource "aws_security_group" "teleport_server" {
   name_prefix = "teleport_server_"
   description = "Teleport server specific rules"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = "${data.aws_subnet.teleport.vpc_id}"
 
   tags {
     project     = "${var.project}"

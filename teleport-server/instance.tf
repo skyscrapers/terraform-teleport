@@ -1,5 +1,5 @@
 resource "aws_instance" "teleport_instance" {
-  ami                         = "${var.ami}"
+  ami                         = "${var.ami_id}"
   instance_type               = "${var.instance_type}"
   key_name                    = "${var.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.profile.id}"

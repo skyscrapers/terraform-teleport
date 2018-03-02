@@ -12,6 +12,10 @@ data "aws_route53_zone" "root" {
   name = "${var.r53_zone}"
 }
 
+data "aws_subnet" "teleport" {
+  id = "${var.subnet_id}"
+}
+
 variable "ebs_optimized_list" {
   type = "list"
 
