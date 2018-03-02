@@ -4,8 +4,8 @@ resource "aws_security_group" "teleport_server" {
   vpc_id      = "${data.aws_subnet.teleport.vpc_id}"
 
   tags {
-    project     = "${var.project}"
-    environment = "${var.environment}"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 

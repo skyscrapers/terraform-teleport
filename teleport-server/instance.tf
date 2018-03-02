@@ -18,9 +18,9 @@ resource "aws_instance" "teleport_instance" {
 
   tags {
     Name        = "teleport-${var.project}-${var.environment}"
-    stack       = "teleport"
-    project     = "${var.project}"
-    environment = "${var.environment}"
+    Stack       = "teleport"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
   }
 }
 
