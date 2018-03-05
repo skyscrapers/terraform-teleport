@@ -1,5 +1,5 @@
 resource "aws_instance" "teleport_instance" {
-  ami                         = "${length(var.ami_id) > 0 ? var.ami_id : data.aws_ami.teleport_ami.0.image_id}"
+  ami                         = "${length(var.ami_id) > 0 ? var.ami_id : join("", data.aws_ami.teleport_ami.*.image_id)}"
   instance_type               = "${var.instance_type}"
   key_name                    = "${var.key_name}"
   iam_instance_profile        = "${aws_iam_instance_profile.profile.id}"
