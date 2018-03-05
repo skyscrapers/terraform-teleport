@@ -4,9 +4,7 @@ locals {
   teleport_cluster_name   = "${length(var.teleport_cluster_name) > 0 ? var.teleport_cluster_name : local.teleport_domain_name}"
 }
 
-data "aws_region" "current" {
-  current = true
-}
+data "aws_region" "current" {}
 
 data "aws_route53_zone" "root" {
   name = "${var.r53_zone}"
