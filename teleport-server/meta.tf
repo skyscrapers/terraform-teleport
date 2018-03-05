@@ -16,6 +16,20 @@ data "aws_subnet" "teleport" {
   id = "${var.subnet_id}"
 }
 
+data "aws_ami" "teleport_ami" {
+  count       = "${length(var.ami_id) > 0 ? 0 : 1}"
+  most_recent = true
+
+  filter {
+    name   = "tag:project"
+    values = ["teleport"]
+  }
+
+  name_regex = "^ebs-teleport-*"
+
+  owners = ["496014204152"]
+}
+
 variable "ebs_optimized_list" {
   type = "list"
 

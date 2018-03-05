@@ -14,12 +14,13 @@ variable "key_name" {
   description = "SSH key name for the EC2 instance."
 }
 
-variable "ami_id" {
-  description = "AMI id for the EC2 instance."
-}
-
 variable "r53_zone" {
   description = "The Route53 zone where to add the Teleport DNS record."
+}
+
+variable "ami_id" {
+  description = "AMI id for the EC2 instance."
+  default     = ""
 }
 
 variable "teleport_cluster_name" {

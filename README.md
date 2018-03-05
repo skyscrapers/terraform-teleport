@@ -163,8 +163,8 @@ These are the requirements to apply this module:
 * [`environment`]: String(required): The environment where this setup belongs to. Only for naming reasons.
 * [`subnet_id`]: String(required): Subnet id where the EC2 instance will be deployed.
 * [`key_name`]: String(required): SSH key name for the EC2 instance.
-* [`ami_id`]: String(required): AMI id for the EC2 instance.
 * [`r53_zone`]: String(required): The Route53 zone where to add the Teleport DNS record.
+* [`ami_id`]: String(optional): AMI id for the EC2 instance. If omitted, it'll take the latest Skyscrapers' built AMI.
 * [`teleport_subdomain`]: String(optional): DNS subdomain that will be created for the teleport server. Defaults to `"teleport"`.
 * [`teleport_cluster_name`]: String(optional): Name of the teleport cluster. Defaults to `"${var.teleport_subdomain}.${var.r53_zone}"`.
 * [`teleport_dynamodb_table`]: String(optional): Name of the DynamoDB table to configure in Teleport. Defaults to `"${var.teleport_subdomain}.${var.r53_zone}"`.
