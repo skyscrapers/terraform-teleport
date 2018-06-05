@@ -1,3 +1,14 @@
-- content: |
-    ${teleport_config}
-  path: /etc/teleport.yaml
+ssh_service:
+  enabled: yes
+  listen_addr: 0.0.0.0:3022
+
+  labels:
+    environment: "${environment}"
+    function: "${function}"
+    project: "${project}"
+
+  permit_user_env: false
+auth_service:
+  enabled: no
+proxy_service:
+  enabled: no
