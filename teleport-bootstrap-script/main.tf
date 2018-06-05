@@ -16,7 +16,13 @@ data "template_file" "teleport_service" {
 }
 
 data "template_file" "teleport_config" {
-  template = "${file("${path.module}/templates/teleport.yaml")}"
+  template = "${file("${path.module}/templates/teleport.yaml.tpl")}"
+
+  vars {
+    environment = "${var.environment}"
+    project = "${var.project}"
+    function = "${var.function}"
+  }
 }
 
 data "template_file" "teleport_service_cloudinit" {
@@ -28,7 +34,7 @@ data "template_file" "teleport_service_cloudinit" {
 }
 
 data "template_file" "teleport_config_cloudinit" {
-  template = "${file("${path.module}/templates/teleport.yaml.tpl")}"
+  template = "${file("${path.module}/templates/teleport-cloudinit.yaml.tpl")}"
 
   vars {
     teleport_config = "${indent(4,data.template_file.teleport_config.rendered)}"
