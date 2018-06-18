@@ -54,7 +54,7 @@ EOF
   # Start teleport
   part {
     content_type = "text/x-shellscript"
-    content      = "${replace(module.teleport_bootstrap_script.teleport_bootstrap_script, )}"
+    content      = "${module.teleport_bootstrap_script.teleport_bootstrap_script}"
   }
 }
 
