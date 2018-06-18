@@ -24,3 +24,8 @@ variable "include_instance_id" {
   description = "If running in EC2, also include the instance ID in the node name. This is needed in autoscaled environments, so nodes don't collide with each other if they get recycled/autoscaled. Defaults to true"
   default     = "true"
 }
+
+variable "service_type" {
+  description = "Type of service to use for Teleport. Either systemd or upstart"
+  default     = "systemd"
+}

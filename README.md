@@ -17,6 +17,7 @@ This module creates a script to configure and start the Teleport service on a se
 * [`project`]: String(optional): Project where this node belongs to, will be the second part of the node name. Defaults to ''
 * [`environment`]: String(optional): Environment where this node belongs to, will be the third part of the node name. Defaults to ''
 * [`include_instance_id`]: String(optional): If running in EC2, also include the instance ID in the node name. This is needed in autoscaled environments, so nodes don't collide with each other if they get recycled/autoscaled. Defaults to true
+* [`service_type`]: String(optional): Type of service to use for Teleport. Either systemd or upstart. Defaults to systemd
 
 ### Outputs
  * [`teleport_bootstrap_script`]: String: The rendered script to add to the Instance cloud-init user data.
@@ -32,7 +33,31 @@ ${teleport_service}
 ```
 
 ### Example
+
 ```
+data "template_cloudinit_config" "api_cloudinit" {
+  gzip          = true
+  base64_encode = true
+
+  # Configure teleport
+  part {
+    content_type = "text/cloud-config"
+    content =<<EOF
+#cloud-config
+
+write_files:
+${module.teleport_bootstrap_script.teleport_config_cloudinit}
+${module.teleport_bootstrap_script.teleport_service_cloudinit}
+EOF
+  }
+
+  # Start teleport
+  part {
+    content_type = "text/x-shellscript"
+    content      = "${module.teleport_bootstrap_script.teleport_bootstrap_script}"
+  }
+}
+
 module "teleport_bootstrap_script" {
   source      = "github.com/skyscrapers/terraform-teleport//teleport-bootstrap-script?ref=1.0.0"
   auth_server = "tools01.customer.skyscrape.rs:3025"

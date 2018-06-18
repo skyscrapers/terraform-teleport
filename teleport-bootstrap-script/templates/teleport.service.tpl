@@ -1,3 +1,4 @@
 - content: |
     ${teleport_service}
-  path: /lib/systemd/system/teleport.service
+  path: ${service_type_path}
+  permissions: '${file_permissions}'
