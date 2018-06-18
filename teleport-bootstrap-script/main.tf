@@ -12,7 +12,7 @@ data "template_file" "teleport_bootstrap_script" {
 }
 
 data "template_file" "teleport_service" {
-  template = "${file("${path.module}/templates/teleport.service")}"
+  template = "${file("${path.module}/templates/${var.service_type == "systemd" ? "teleport.service" : "teleport-upstart.conf"}")}"
 }
 
 data "template_file" "teleport_config" {
@@ -29,7 +29,8 @@ data "template_file" "teleport_service_cloudinit" {
   template = "${file("${path.module}/templates/teleport.service.tpl")}"
 
   vars {
-    teleport_service = "${indent(4,data.template_file.teleport_service.rendered)}"
+    teleport_service  = "${indent(4,data.template_file.teleport_service.rendered)}"
+    service_type_path = "${var.service_type == "systemd" ? "/lib/systemd/system/teleport.service" : "/etc/init.d/teleport"}"
   }
 }
 
