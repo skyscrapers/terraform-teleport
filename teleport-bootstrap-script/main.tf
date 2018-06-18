@@ -27,6 +27,7 @@ data "template_file" "teleport_service_cloudinit" {
   vars {
     teleport_service  = "${indent(4,file("${path.module}/templates/${var.service_type == "systemd" ? "teleport.service" : "teleport-upstart.conf"}"))}"
     service_type_path = "${var.service_type == "systemd" ? "/lib/systemd/system/teleport.service" : "/etc/init.d/teleport"}"
+    file_permissions  = "${var.service_type == "systemd" ? "0644" : "0755"}"
   }
 }
 
