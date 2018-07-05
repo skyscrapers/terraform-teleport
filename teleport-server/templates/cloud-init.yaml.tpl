@@ -167,7 +167,7 @@ write_files:
     state_file = /var/awslogs/state/agent-state
     [teleport_audit_log]
     datetime_format = %b %d %H:%M:%S
-    file = /var/lib/teleport/log/*.log
+    file = /var/lib/teleport/log/*/*.log
     buffer_duration = 5000
     log_stream_name = {instance_id}
     initial_position = start_of_file
