@@ -149,3 +149,13 @@ resource "aws_security_group_rule" "internet_https_access" {
   security_group_id = "${aws_security_group.teleport_server.id}"
   cidr_blocks       = ["0.0.0.0/0"]
 }
+
+resource "aws_security_group_rule" "ntp" {
+  description       = "NTP (clock synchronization)"
+  type              = "egress"
+  from_port         = 123
+  to_port           = 123
+  protocol          = "udp"
+  security_group_id = "${aws_security_group.teleport_server.id}"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
