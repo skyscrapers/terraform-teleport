@@ -134,26 +134,6 @@ write_files:
     WantedBy=multi-user.target
   path: /etc/systemd/system/teleport.service
 - content: |
-    [Unit]
-    Description=Let's Encrypt renewal
-
-    [Service]
-    Type=oneshot
-    ExecStart=/usr/bin/certbot certonly --keep-until-expiring -n --agree-tos --email ${letsencrypt_email} --dns-route53 -d ${teleport_domain_name} --deploy-hook /usr/local/bin/teleport_enable_tls.sh
-  path: /etc/systemd/system/certbot.service
-- content: |
-    [Unit]
-    Description=Twice daily renewal of Let's Encrypt's certificates
-
-    [Timer]
-    OnCalendar=0/12:00:00
-    RandomizedDelaySec=1h
-    Persistent=true
-
-    [Install]
-    WantedBy=timers.target
-  path: /etc/systemd/system/certbot.timer
-- content: |
     #!/bin/sh
     # Enable TLS certificate in teleport if not already enabled
     sed -i '/https_key_file:/s/^\(\s*\)#/\1/g' /etc/teleport.yaml
