@@ -1,3 +1,8 @@
+module "is_ebs_optimised" {
+  source        = "github.com/skyscrapers/terraform-instances//is_ebs_optimised?ref=2.3.5"
+  instance_type = "${var.instance_type}"
+}
+
 resource "aws_instance" "teleport_instance" {
   ami                         = "${length(var.ami_id) > 0 ? var.ami_id : join("", data.aws_ami.teleport_ami.*.image_id)}"
   instance_type               = "${var.instance_type}"
@@ -6,7 +11,7 @@ resource "aws_instance" "teleport_instance" {
   vpc_security_group_ids      = ["${aws_security_group.teleport_server.id}"]
   subnet_id                   = "${var.subnet_id}"
   disable_api_termination     = "false"
-  ebs_optimized               = "${contains(var.ebs_optimized_list, var.instance_type)}"
+  ebs_optimized               = "${module.is_ebs_optimised.is_ebs_optimised}"
   associate_public_ip_address = "true"
   user_data                   = "${data.template_cloudinit_config.teleport.rendered}"
 

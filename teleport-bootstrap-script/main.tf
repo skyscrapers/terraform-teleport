@@ -16,8 +16,8 @@ data "template_file" "teleport_config" {
 
   vars {
     environment = "${var.environment}"
-    project = "${var.project}"
-    function = "${var.function}"
+    project     = "${var.project}"
+    function    = "${var.function}"
   }
 }
 
