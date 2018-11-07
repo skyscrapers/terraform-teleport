@@ -39,8 +39,8 @@ write_files:
         type: dynamodb
         region: ${teleport_dynamodb_region}
         table_name: ${teleport_dynamodb_table}
-        audit_events_uri: [file:///var/lib/teleport/audit/events, dynamo://${teleport_dynamodb_table}_events]
-        audit_sessions_uri: s3://${recorded_sessions_bucket_name}/teleport.events
+        audit_events_uri: ["file:///var/lib/teleport/audit/events", "dynamodb://${teleport_dynamodb_table}_events"]
+        audit_sessions_uri: "s3://${recorded_sessions_bucket_name}/teleport.events"
 
     # This section configures the 'auth service':
     auth_service:
