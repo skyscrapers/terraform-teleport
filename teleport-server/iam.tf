@@ -63,6 +63,7 @@ data "aws_iam_policy_document" "teleport" {
 
     resources = [
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events",
     ]
   }
 
@@ -78,8 +79,35 @@ data "aws_iam_policy_document" "teleport" {
     ]
 
     resources = [
-      "arn:aws:logs:*:*:log-group:teleport_audit_log",
-      "arn:aws:logs:*:*:log-group:teleport_audit_log:*",
+      "${aws_cloudwatch_log_group.teleport_audit.arn}",
+      "${aws_cloudwatch_log_group.teleport_audit.arn}:*",
+      "${aws_cloudwatch_log_group.teleport.arn}",
+      "${aws_cloudwatch_log_group.teleport.arn}:*",
+    ]
+  }
+
+  statement {
+    sid = "S3EventAccess"
+
+    actions = [
+      "s3:Get*",
+      "s3:Put*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.sessions.arn}/*",
+    ]
+  }
+
+  statement {
+    sid = "S3EventListAccess"
+
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.sessions.arn}",
     ]
   }
 }

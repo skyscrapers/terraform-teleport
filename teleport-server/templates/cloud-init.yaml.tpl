@@ -5,7 +5,7 @@ runcmd:
   - [ certbot, certonly, --server, "${acme_server}", -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
   - [ systemctl, start, teleport.service ]
   - [ tar, xvf, /root/AgentDependencies.tar.gz, -C, /tmp/ ]
-  - [ python , /root/awslogs-agent-setup.py, -n, --region, ${teleport_dynamodb_region}, --dependency-path, /tmp/AgentDependencies, -c, /etc/awslogs/awslogs.conf ]
+  - [ python3 , /root/awslogs-agent-setup.py, -n, --region, ${teleport_dynamodb_region}, --dependency-path, /tmp/AgentDependencies, -c, /etc/awslogs/awslogs.conf ]
 
 write_files:
 - content: |
@@ -39,6 +39,8 @@ write_files:
         type: dynamodb
         region: ${teleport_dynamodb_region}
         table_name: ${teleport_dynamodb_table}
+        audit_events_uri: [file:///var/lib/teleport/audit/events, dynamo://${teleport_dynamodb_table}_events]
+        audit_sessions_uri: s3://${recorded_sessions_bucket_name}/teleport.events
 
     # This section configures the 'auth service':
     auth_service:
@@ -147,9 +149,21 @@ write_files:
     state_file = /var/awslogs/state/agent-state
     [teleport_audit_log]
     datetime_format = %b %d %H:%M:%S
-    file = /var/lib/teleport/log/*/*.log
+    file = /var/lib/teleport/audit/events/*.log
     buffer_duration = 5000
     log_stream_name = {instance_id}
     initial_position = start_of_file
     log_group_name = teleport_audit_log
+    [teleport_log]
+    datetime_format = %b %d %H:%M:%S
+    file = /var/log/teleport.log
+    buffer_duration = 5000
+    log_stream_name = {instance_id}
+    initial_position = start_of_file
+    log_group_name = teleport_log
   path: /etc/awslogs/awslogs.conf
+  - content: |
+    :programname, isequal, "teleport" /var/log/teleport.log
+
+    & stop
+  path: /etc/rsyslog.d/teleport.conf
