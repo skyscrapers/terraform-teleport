@@ -162,7 +162,7 @@ write_files:
     initial_position = start_of_file
     log_group_name = teleport_log
   path: /etc/awslogs/awslogs.conf
-  - content: |
+- content: |
     :programname, isequal, "teleport" /var/log/teleport.log
 
     & stop
