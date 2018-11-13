@@ -63,7 +63,9 @@ data "aws_iam_policy_document" "teleport" {
 
     resources = [
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}/*",        # also allow operations on the table indexes
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events/*", # also allow operations on the table indexes
     ]
   }
 
