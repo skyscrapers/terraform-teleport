@@ -15,9 +15,10 @@ data "template_file" "teleport_config" {
   template = "${file("${path.module}/templates/teleport.yaml.tpl")}"
 
   vars {
-    environment = "${var.environment}"
-    project     = "${var.project}"
-    function    = "${var.function}"
+    environment       = "${var.environment}"
+    project           = "${var.project}"
+    function          = "${var.function}"
+    additional_labels = "${indent(4, join("\n", var.additional_labels))}"
   }
 }
 

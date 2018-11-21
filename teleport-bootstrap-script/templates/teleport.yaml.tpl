@@ -6,6 +6,7 @@ ssh_service:
     environment: "${environment}"
     function: "${function}"
     project: "${project}"
+    ${additional_labels}
 
   permit_user_env: false
 auth_service:
