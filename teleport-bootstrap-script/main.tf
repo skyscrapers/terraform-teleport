@@ -11,13 +11,18 @@ data "template_file" "teleport_bootstrap_script" {
   }
 }
 
+locals {
+  environment_label = "${var.environment == "" ? "" : "environment: ${var.environment}" }"
+  project_label     = "${var.project == "" ? "" : "project: ${var.project}" }"
+  function_label    = "${var.function == "" ? "" : "function: ${var.function}" }"
+  default_labels    = "${list(local.environment_label, local.project_label, local.function_label)}"
+}
+
 data "template_file" "teleport_config" {
   template = "${file("${path.module}/templates/teleport.yaml.tpl")}"
 
   vars {
-    environment = "${var.environment}"
-    project     = "${var.project}"
-    function    = "${var.function}"
+    labels = "${indent(4, join("\n", distinct(compact(concat(local.default_labels, var.additional_labels)))))}"
   }
 }
 

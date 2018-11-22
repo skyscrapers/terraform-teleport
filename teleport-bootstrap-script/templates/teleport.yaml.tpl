@@ -3,9 +3,12 @@ ssh_service:
   listen_addr: 0.0.0.0:3022
 
   labels:
-    environment: "${environment}"
-    function: "${function}"
-    project: "${project}"
+    ${labels}
+
+  commands:
+    - name: teleport_version
+      command: ["/bin/bash", "-c", "/usr/local/bin/teleport version | cut -d' ' -f2"]
+      period: 1h0m0s
 
   permit_user_env: false
 auth_service:
