@@ -84,7 +84,10 @@ The server will use Letsencrypt to retrieve a valid certificate for the Teleport
 
 These are the requirements to apply this module:
 
-- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport, certbot (with the Route53 plugin) and CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter: `owner-id`: "496014204152", `name`: "ebs-teleport-*", `tag:project`: "teleport".
+- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport, certbot (with the Route53 plugin) and CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter:
+  - `owner-id`: "496014204152"
+  - `name`: "ebs-teleport-*"
+  - `tag:project`: "teleport"
 - Route53 zone
 - VPC and a subnet where to deploy the EC2 instance
 
