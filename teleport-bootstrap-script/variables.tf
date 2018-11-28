@@ -3,7 +3,7 @@ variable "auth_server" {
 }
 
 variable "auth_token" {
-  description = "Auth token that this node will present to the auth server."
+  description = "Auth token that this node will present to the auth server. *Note* that this should be the bare token, without the type prefix. See the official [documentation on static tokens](https://gravitational.com/teleport/docs/2.3/admin-guide/#static-tokens) for more info."
 }
 
 variable "function" {

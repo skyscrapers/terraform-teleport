@@ -54,12 +54,12 @@ variable "teleport_log_severity" {
 }
 
 variable "teleport_auth_tokens" {
-  description = "List of static tokens to configure in the Teleport server. See the official documentation on static tokens [here](https://gravitational.com/teleport/docs/2.3/admin-guide/#static-tokens)."
+  description = "List of static tokens to configure in the Teleport server. *Note* that these tokens will be added \"as-is\" in the Teleport configuration, so they must be pre-fixed with the token type. See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info."
   default     = []
 }
 
 variable "teleport_session_recording" {
-  description = "Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/2.4/admin-guide/#configuration) for more info."
+  description = "Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info."
   default     = "node"
 }
 
