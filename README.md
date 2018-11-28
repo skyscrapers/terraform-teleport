@@ -28,9 +28,9 @@ This module creates a script to configure and start the Teleport service on a se
 
 | Name | Description |
 |------|-------------|
-| teleport_bootstrap_script |  |
-| teleport_config_cloudinit |  |
-| teleport_service_cloudinit |  |
+| teleport_bootstrap_script | The rendered script to add to the Instance cloud-init user data |
+| teleport_config_cloudinit | The rendered Teleport config that you can add to the instance cloud-init user data |
+| teleport_service_cloudinit | The rendered Teleport systemd service that you can add to the instance cloud-init user data |
 
 The two cloudinit outputs can be used in the context of `write files`. Example:
 
