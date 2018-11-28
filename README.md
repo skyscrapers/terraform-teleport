@@ -1,4 +1,5 @@
 # terraform-teleport
+
 Terraform module to provision Teleport related resources.
 
 ## teleport-bootstrap-script
@@ -16,24 +17,24 @@ This module creates a script to configure and start the Teleport service on a se
 |------|-------------|:----:|:-----:|:-----:|
 | additional_labels | List of additional labels to add to the Teleport node. Every list item represents a label, with its key and value. Example: `["k8s_version: 1.10.10", "instance_type: t2.medium"]` | list | `<list>` | no |
 | auth_server | Auth server that this node will connect to, including the port number | string | - | yes |
-| auth_token | Auth token that this node will present to the auth server. | string | - | yes |
-| environment | Environment where this node belongs to, will be the third part of the node name. | string | `` | no |
-| function | Function that this node performs, will be the first part of the node name. | string | - | yes |
-| include_instance_id | If running in EC2, also include the instance ID in the node name. This is needed in autoscaled environments, so nodes don't collide with each other if they get recycled/autoscaled. | string | `true` | no |
-| project | Project where this node belongs to, will be the second part of the node name. | string | `` | no |
+| auth_token | Auth token that this node will present to the auth server. **Note** that this should be the bare token, without the type prefix. See the official [documentation on static tokens](https://gravitational.com/teleport/docs/2.3/admin-guide/#static-tokens) for more info | string | - | yes |
+| environment | Environment where this node belongs to, will be the third part of the node name | string | `` | no |
+| function | Function that this node performs, will be the first part of the node name | string | - | yes |
+| include_instance_id | If running in EC2, also include the instance ID in the node name. This is needed in autoscaled environments, so nodes don't collide with each other if they get recycled/autoscaled | string | `true` | no |
+| project | Project where this node belongs to, will be the second part of the node name | string | `` | no |
 | service_type | Type of service to use for Teleport. Either systemd or upstart | string | `systemd` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| teleport_bootstrap_script |  |
-| teleport_config_cloudinit |  |
-| teleport_service_cloudinit |  |
+| teleport_bootstrap_script | The rendered script to add to the Instance cloud-init user data |
+| teleport_config_cloudinit | The rendered Teleport config that you can add to the instance cloud-init user data |
+| teleport_service_cloudinit | The rendered Teleport systemd service that you can add to the instance cloud-init user data |
 
 The two cloudinit outputs can be used in the context of `write files`. Example:
 
-```
+```yaml
 write_files:
 ${teleport_config}
 ${teleport_service}
@@ -41,7 +42,7 @@ ${teleport_service}
 
 ### Example
 
-```
+```tf
 data "template_cloudinit_config" "api_cloudinit" {
   gzip          = true
   base64_encode = true
@@ -83,52 +84,60 @@ The server will use Letsencrypt to retrieve a valid certificate for the Teleport
 
 These are the requirements to apply this module:
 
-- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport, certbot (with the Route53 plugin) and CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter: `owner-id`: "496014204152", `name`: "ebs-teleport-*", `tag:project`: "teleport".
+- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport, certbot (with the Route53 plugin) and CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter:
+  - `owner-id`: "496014204152"
+  - `name`: "ebs-teleport-*"
+  - `tag:project`: "teleport"
 - Route53 zone
 - VPC and a subnet where to deploy the EC2 instance
 
 ### Available variables
 
-* [`project`]: String(required): A project where this setup belongs to. Only for naming reasons.
-* [`environment`]: String(required): The environment where this setup belongs to. Only for naming reasons.
-* [`subnet_id`]: String(required): Subnet id where the EC2 instance will be deployed.
-* [`key_name`]: String(required): SSH key name for the EC2 instance.
-* [`r53_zone`]: String(required): The Route53 zone where to add the Teleport DNS record.
-* [`ami_id`]: String(optional): AMI id for the EC2 instance. If omitted, it'll take the latest Skyscrapers' built AMI.
-* [`teleport_subdomain`]: String(optional): DNS subdomain that will be created for the teleport server. Defaults to `"teleport"`.
-* [`teleport_cluster_name`]: String(optional): Name of the teleport cluster. Defaults to `"${var.teleport_subdomain}.${var.r53_zone}"`.
-* [`teleport_dynamodb_table`]: String(optional): Name of the DynamoDB table to configure in Teleport. Defaults to `"${var.teleport_subdomain}.${var.r53_zone}"`.
-* [`instance_type`]: String(optional): Instance type for the EC2 instance. Defaults to `"t2.small"`.
-* [`letsencrypt_email`]: String(optional): Email to use to register to letsencrypt. Defaults to `"letsencrypt@skyscrapers.eu"`.
-* [`teleport_log_output`]: String(optional): Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog`. Defaults to `"stdout"`
-* [`teleport_log_severity`]: String(optional): Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR`. Defaults to `"ERROR"`
-* [`teleport_auth_tokens`]: List(optional): List of static tokens to configure in the Teleport server. See the official documentation on static tokens [here](https://gravitational.com/teleport/docs/2.3/admin-guide/#static-tokens). Defaults to `[]`.
-* [`teleport_session_recording`]: String(optional): Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/2.4/admin-guide/#configuration) for more info. Defaults to `"node"`.
-* [`allowed_node_cidr_blocks`]: List(optional): CIDR blocks that are allowed to access the API interface in the `auth` server. Defaults to `["10.0.0.0/8"]`.
-* [`allowed_cli_cidr_blocks`]: List(optional): CIDR blocks that are allowed to access the cli interface of the `proxy` server. Defaults to `["0.0.0.0/0"]`.
-* [`allowed_web_cidr_blocks`]: List(optional): CIDR blocks that are allowed to access the web interface of the `proxy` server. Defaults to `["0.0.0.0/0"]`.
-* [`allowed_tunnel_cidr_blocks`]: List(optional): CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server. Defaults to `["0.0.0.0/0"]`.
-* [`root_vl_type`]: String(optional): Volume type for the root volume of the EC2 instance. Can be `"standard"`, `"gp2"`, or `"io1"`. Defaults to `"gp2"`.
-* [`root_vl_size`]: String(optional): Volume size for the root volume of the EC2 instance, in gigabytes. Defaults to `16`
-* [`root_vl_delete`]: String(optional): Whether the root volume of the EC2 instance should be destroyed on instance termination. Defaults to `"true"`.
-* [`acme_server`]: String(optional): ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server. Defaults to `"https://acme-v01.api.letsencrypt.org/directory"`
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | string | `https://acme-v01.api.letsencrypt.org/directory` | no |
+| allowed_cli_cidr_blocks | CIDR blocks that are allowed to access the cli interface of the `proxy` server | string | `<list>` | no |
+| allowed_node_cidr_blocks | CIDR blocks that are allowed to access the API interface in the `auth` server | string | `<list>` | no |
+| allowed_tunnel_cidr_blocks | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | string | `<list>` | no |
+| allowed_web_cidr_blocks | CIDR blocks that are allowed to access the web interface of the `proxy` server | string | `<list>` | no |
+| ami_id | AMI id for the EC2 instance | string | `` | no |
+| environment | The environment where this setup belongs to. Only for naming reasons | string | - | yes |
+| instance_type | Instance type for the EC2 instance | string | `t2.small` | no |
+| key_name | SSH key name for the EC2 instance | string | - | yes |
+| letsencrypt_email | Email to use to register to letsencrypt | string | `letsencrypt@skyscrapers.eu` | no |
+| project | A project where this setup belongs to. Only for naming reasons | string | - | yes |
+| r53_zone | The Route53 zone where to add the Teleport DNS record | string | - | yes |
+| root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | string | `true` | no |
+| root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | string | `16` | no |
+| root_vl_type | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | string | `gp2` | no |
+| subnet_id | Subnet id where the EC2 instance will be deployed | string | - | yes |
+| teleport_auth_tokens | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | string | `<list>` | no |
+| teleport_cluster_name | Name of the teleport cluster | string | `` | no |
+| teleport_dynamodb_table | Name of the DynamoDB table to configure in Teleport | string | `` | no |
+| teleport_log_output | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | string | `stdout` | no |
+| teleport_log_severity | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | string | `ERROR` | no |
+| teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | string | `node` | no |
+| teleport_subdomain | DNS subdomain that will be created for the teleport server | string | `teleport` | no |
 
 ### Outputs
-* [`teleport_server_sg_id`]: String: Security group id of the Teleport server.
-* [`teleport_server_instance_id`]: String: Instance id of the Teleport server.
-* [`teleport_server_public_ip`]: String: Public IP of the Teleport server.
-* [`teleport_server_private_ip`]: String: Private IP of the Teleport server.
-* [`teleport_server_fqdn`]: String: FQDN of the DNS record of the Teleport server.
-* [`teleport_server_instance_profile_id`]: String: Instance profile id of the Teleport server.
-* [`teleport_server_instance_profile_arn`]: String: Instance profile ARN of the Teleport server.
-* [`teleport_server_instance_profile_name`]: String: Instance profile name of the Teleport server.
-* [`teleport_server_role_id`]: String: Role id of the Teleport server.
-* [`teleport_server_role_arn`]: String: Role ARN of the Teleport server.
-* [`teleport_server_role_name`]: String: Role name of the Teleport server.
+
+| Name | Description |
+|------|-------------|
+| teleport_server_fqdn | FQDN of the DNS record of the Teleport server. |
+| teleport_server_instance_id | Instance id of the Teleport server. |
+| teleport_server_instance_profile_arn | Instance profile ARN of the Teleport server. |
+| teleport_server_instance_profile_id | Instance profile id of the Teleport server. |
+| teleport_server_instance_profile_name | Instance profile name of the Teleport server. |
+| teleport_server_private_ip | Private IP of the Teleport server. |
+| teleport_server_public_ip | Public IP of the Teleport server. |
+| teleport_server_role_arn | Role ARN of the Teleport server. |
+| teleport_server_role_id | Role id of the Teleport server. |
+| teleport_server_role_name | Role name of the Teleport server. |
+| teleport_server_sg_id | Security group id of the Teleport server. |
 
 ### Example
 
-```
+```tf
 module "teleport_ec2" {
   source                  = "github.com/skyscrapers/terraform-teleport//teleport-server?ref=3.0.0"
   ami                     = "ami-9d6324e4"
@@ -145,18 +154,21 @@ module "teleport_ec2" {
 
 This module will create the needed security group rules to allow a Teleport node to join a cluster. It requires the security groups of the three components (see "Available variables"), although both `proxy` and `auth` might run in the same server and have the same security group.
 
-### Available variables:
+### Available variables
 
-* [`teleport_proxy_sg_id`]: String(required): Security group id of the `proxy` server.
-* [`teleport_node_sg_id`]: String(required): Security group id of the `node` server.
-* [`teleport_auth_sg_id`]: String(required): Security group id of the `auth` server.
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| teleport_auth_sg_id | Security group id of the `auth` server. | string | - | yes |
+| teleport_node_sg_id | Security group id of the `node` server. | string | - | yes |
+| teleport_proxy_sg_id | Security group id of the `proxy` server. | string | - | yes |
 
 ### Outputs
+
 \
 
 ### Example
 
-```
+```tf
 module "teleport_vault_sg_rules" {
   teleport_proxy_sg_id = "${data.terraform_remote_state.teleport.teleport_server_sg_id}"
   teleport_node_sg_id  = "${module.ha_vault.sg_id}"
