@@ -59,5 +59,8 @@ data "template_file" "cloudinit_teleport" {
     teleport_session_recording    = "${var.teleport_session_recording}"
     acme_server                   = "${var.acme_server}"
     recorded_sessions_bucket_name = "${aws_s3_bucket.sessions.id}"
+    project                       = "${var.project}"
+    environment                   = "${var.environment}"
+    instance_type                 = "${var.instance_type}"
   }
 }

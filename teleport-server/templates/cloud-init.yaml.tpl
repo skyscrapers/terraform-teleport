@@ -95,8 +95,17 @@ write_files:
 
       # See explanation of labels in "Labeling Nodes" section below
       labels:
-        role: teleport-server
+        function: teleport-server
         aws_region: ${teleport_dynamodb_region}
+        project: ${project}
+        environment: ${environment}
+        instance_type: ${instance_type}
+
+      # List of the commands to periodically execute. Their output will be used as node labels.
+      commands:
+        - name: teleport_version
+          command: ['/bin/sh', '-c', '/usr/local/bin/teleport version | cut -d " " -f2']
+          period: 24h0m0s
 
     # This section configures the 'proxy servie'
     proxy_service:
