@@ -104,7 +104,7 @@ write_files:
       # List of the commands to periodically execute. Their output will be used as node labels.
       commands:
         - name: teleport_version
-          command: ['/usr/local/bin/teleport', 'version']
+          command: ['/bin/sh', '-c', '/usr/local/bin/teleport version | cut -d " " -f2']
           period: 24h0m0s
 
     # This section configures the 'proxy servie'
