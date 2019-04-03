@@ -6,7 +6,9 @@ After=network.target
 EnvironmentFile=/etc/teleport
 Type=simple
 Restart=on-failure
-ExecStart=/usr/local/bin/teleport start --config=/etc/teleport.yaml --nodename $NODENAME --advertise-ip $ADVERTISE_IP --auth-server $AUTH_SERVER --token $AUTH_TOKEN
+ExecStart=/usr/local/bin/teleport start --config=/etc/teleport.yaml --nodename $NODENAME --advertise-ip $ADVERTISE_IP --auth-server $AUTH_SERVER --token $AUTH_TOKEN --pid-file=/var/run/teleport.pid
+ExecReload=/bin/kill -HUP $MAINPID
+PIDFile=/var/run/teleport.pid
 
 [Install]
 WantedBy=multi-user.target
