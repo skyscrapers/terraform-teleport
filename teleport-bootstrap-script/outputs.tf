@@ -10,5 +10,5 @@ output "teleport_config_cloudinit" {
 
 output "teleport_service_cloudinit" {
   description = "The rendered Teleport systemd service that you can add to the instance cloud-init user data"
-  value       = "${data.template_file.teleport_service_cloudinit.rendered}"
+  value       = "${file("${path.module}/templates/teleport.service.yaml")}"
 }

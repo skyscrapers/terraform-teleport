@@ -25,11 +25,6 @@ variable "include_instance_id" {
   default     = "true"
 }
 
-variable "service_type" {
-  description = "Type of service to use for Teleport. Either systemd or upstart"
-  default     = "systemd"
-}
-
 variable "additional_labels" {
   type        = "list"
   description = "List of additional labels to add to the Teleport node. Every list item represents a label, with its key and value. Example: `[\"k8s_version: 1.10.10\", \"instance_type: t2.medium\"]`"
