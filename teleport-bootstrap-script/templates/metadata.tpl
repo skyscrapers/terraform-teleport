@@ -19,7 +19,7 @@ get_private_ip () {
 echo "ADVERTISE_IP=$(get_private_ip)" >> /etc/teleport
 
 ## Get instance ID (if possible)
-${include_instance_id == "true" ? "export INSTANCE_ID=-$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
+${include_instance_id ? "export INSTANCE_ID=-$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
 
 ## Set the rest of the config
 echo "AUTH_TOKEN=${auth_token}" >> /etc/teleport
