@@ -1,6 +1,6 @@
 resource "aws_iam_instance_profile" "profile" {
   name_prefix = "teleport-${var.project}-${var.environment}-"
-  role        = "${aws_iam_role.role.name}"
+  role        = aws_iam_role.role.name
 }
 
 resource "aws_iam_role" "role" {
@@ -24,8 +24,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "policy" {
-  role   = "${aws_iam_role.role.id}"
-  policy = "${data.aws_iam_policy_document.teleport.json}"
+  role = aws_iam_role.role.id
+  policy = data.aws_iam_policy_document.teleport.json
 }
 
 data "aws_iam_policy_document" "teleport" {
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "teleport" {
 
     resources = [
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}",
-      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}/*",        # also allow operations on the table indexes
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}/*", # also allow operations on the table indexes
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events",
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events/*", # also allow operations on the table indexes
     ]
@@ -81,9 +81,9 @@ data "aws_iam_policy_document" "teleport" {
     ]
 
     resources = [
-      "${aws_cloudwatch_log_group.teleport_audit.arn}",
+      aws_cloudwatch_log_group.teleport_audit.arn,
       "${aws_cloudwatch_log_group.teleport_audit.arn}:*",
-      "${aws_cloudwatch_log_group.teleport.arn}",
+      aws_cloudwatch_log_group.teleport.arn,
       "${aws_cloudwatch_log_group.teleport.arn}:*",
     ]
   }
@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "teleport" {
     ]
 
     resources = [
-      "${aws_s3_bucket.sessions.arn}",
+      aws_s3_bucket.sessions.arn,
     ]
   }
 }
