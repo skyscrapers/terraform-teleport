@@ -26,19 +26,19 @@ variable "r53_zone" {
 variable "ami_id" {
   type        = string
   description = "AMI id for the EC2 instance"
-  default     = ""
+  default     = null
 }
 
 variable "teleport_cluster_name" {
   type        = string
   description = "Name of the teleport cluster"
-  default     = ""
+  default     = null
 }
 
 variable "teleport_dynamodb_table" {
   type        = string
   description = "Name of the DynamoDB table to configure in Teleport"
-  default     = ""
+  default     = null
 }
 
 variable "instance_type" {
