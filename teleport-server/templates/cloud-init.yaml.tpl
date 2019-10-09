@@ -67,7 +67,7 @@ write_files:
       #
       # We recommend to use tools like `pwgen` to generate sufficiently random
       # tokens of 32+ byte length.
-      ${teleport_auth_tokens}
+      tokens: ${teleport_auth_tokens}
 
       # Optional "cluster name" is needed when configuring trust between multiple
       # auth servers. A cluster name is used as part of a signature in certificates

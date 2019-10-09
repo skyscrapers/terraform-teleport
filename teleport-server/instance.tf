@@ -48,19 +48,13 @@ data "template_file" "cloudinit_teleport" {
   template = file("${path.module}/templates/cloud-init.yaml.tpl")
 
   vars = {
-    letsencrypt_email        = var.letsencrypt_email
-    teleport_domain_name     = local.teleport_domain_name
-    teleport_log_output      = var.teleport_log_output
-    teleport_log_severity    = var.teleport_log_severity
-    teleport_dynamodb_region = data.aws_region.current.name
-    teleport_dynamodb_table  = local.teleport_dynamodb_table
-    teleport_auth_tokens = length(var.teleport_auth_tokens) > 0 ? indent(
-      6,
-      join(
-        "\n",
-        concat(["tokens:"], formatlist("- %s", var.teleport_auth_tokens)),
-      ),
-    ) : ""
+    letsencrypt_email             = var.letsencrypt_email
+    teleport_domain_name          = local.teleport_domain_name
+    teleport_log_output           = var.teleport_log_output
+    teleport_log_severity         = var.teleport_log_severity
+    teleport_dynamodb_region      = data.aws_region.current.name
+    teleport_dynamodb_table       = local.teleport_dynamodb_table
+    teleport_auth_tokens          = jsonencode(var.teleport_auth_tokens)
     teleport_cluster_name         = local.teleport_cluster_name
     teleport_session_recording    = var.teleport_session_recording
     acme_server                   = var.acme_server
