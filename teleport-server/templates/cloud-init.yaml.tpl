@@ -139,7 +139,9 @@ write_files:
     [Service]
     Type=simple
     Restart=on-failure
-    ExecStart=/usr/local/bin/teleport start -c /etc/teleport.yaml
+    ExecStart=/usr/local/bin/teleport start -c /etc/teleport.yaml --pid-file=/var/run/teleport.pid
+    ExecReload=/bin/kill -HUP $MAINPID
+    PIDFile=/var/run/teleport.pid
 
     [Install]
     WantedBy=multi-user.target
