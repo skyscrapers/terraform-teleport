@@ -122,7 +122,7 @@ variable "root_vl_delete" {
 variable "acme_server" {
   type        = string
   description = "ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server"
-  default     = "https://acme-v01.api.letsencrypt.org/directory"
+  default     = "https://acme-v02.api.letsencrypt.org/directory"
 }
 
 variable "teleport_subdomain" {

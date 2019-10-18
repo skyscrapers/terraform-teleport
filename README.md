@@ -96,7 +96,7 @@ These are the requirements to apply this module:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | string | `https://acme-v01.api.letsencrypt.org/directory` | no |
+| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | string | `https://acme-v02.api.letsencrypt.org/directory` | no |
 | allowed_cli_cidr_blocks | CIDR blocks that are allowed to access the cli interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
 | allowed_node_cidr_blocks | CIDR blocks that are allowed to access the API interface in the `auth` server | list(string) | `["0.0.0.0/0"]` | no |
 | allowed_tunnel_cidr_blocks | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
