@@ -103,9 +103,9 @@ These are the requirements to apply this module:
 | allowed_web_cidr_blocks | CIDR blocks that are allowed to access the web interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
 | ami_id | AMI id for the EC2 instance | string | `""` | no |
 | environment | The environment where this setup belongs to. Only for naming reasons | string | - | yes |
-| instance_type | Instance type for the EC2 instance | string | `"t2.small"` | no |
-| key_name | SSH key name for the EC2 instance | string | - | yes |
-| letsencrypt_email | Email to use to register to letsencrypt | string | `"letsencrypt@skyscrapers.eu"` | no |
+| instance_type | Instance type for the EC2 instance | string | `"t3.small"` | no |
+| key_name | SSH key name for the EC2 instance | string | `null` | no |
+| letsencrypt_email | Email to use to register to letsencrypt | string | - | yes |
 | project | A project where this setup belongs to. Only for naming reasons | string | - | yes |
 | r53_zone | The Route53 zone where to add the Teleport DNS record | string | - | yes |
 | root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | bool | `true` | no |

@@ -24,7 +24,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "policy" {
-  role = aws_iam_role.role.id
+  role   = aws_iam_role.role.id
   policy = data.aws_iam_policy_document.teleport.json
 }
 
@@ -64,8 +64,10 @@ data "aws_iam_policy_document" "teleport" {
     resources = [
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}",
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}/*", # also allow operations on the table indexes
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}/stream/*",
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events",
       "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events/*", # also allow operations on the table indexes
+      "arn:aws:dynamodb:${data.aws_region.current.name}:*:table/${local.teleport_dynamodb_table}_events/stream/*",
     ]
   }
 
@@ -92,8 +94,9 @@ data "aws_iam_policy_document" "teleport" {
     sid = "S3EventAccess"
 
     actions = [
-      "s3:Get*",
-      "s3:Put*",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion"
     ]
 
     resources = [
@@ -106,6 +109,7 @@ data "aws_iam_policy_document" "teleport" {
 
     actions = [
       "s3:ListBucket",
+      "s3:ListBucketVersions"
     ]
 
     resources = [
