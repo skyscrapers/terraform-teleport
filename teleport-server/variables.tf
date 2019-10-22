@@ -16,6 +16,7 @@ variable "subnet_id" {
 variable "key_name" {
   type        = string
   description = "SSH key name for the EC2 instance"
+  default     = null
 }
 
 variable "r53_zone" {
@@ -44,13 +45,12 @@ variable "teleport_dynamodb_table" {
 variable "instance_type" {
   type        = string
   description = "Instance type for the EC2 instance"
-  default     = "t2.small"
+  default     = "t3.small"
 }
 
 variable "letsencrypt_email" {
   type        = string
   description = "Email to use to register to letsencrypt"
-  default     = "letsencrypt@skyscrapers.eu"
 }
 
 variable "teleport_log_output" {
