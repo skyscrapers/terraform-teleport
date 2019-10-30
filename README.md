@@ -119,6 +119,7 @@ These are the requirements to apply this module:
 | teleport_log_severity | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | string | `"ERROR"` | no |
 | teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | string | `"node"` | no |
 | teleport_subdomain | DNS subdomain that will be created for the teleport server | string | `"teleport"` | no |
+| teleport_version | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | string | `null` | no |
 
 ### Outputs
 

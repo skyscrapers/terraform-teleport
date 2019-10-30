@@ -30,6 +30,12 @@ variable "ami_id" {
   default     = null
 }
 
+variable "teleport_version" {
+  description = "Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI"
+  default     = null
+  type        = string
+}
+
 variable "teleport_cluster_name" {
   type        = string
   description = "Name of the teleport cluster"
