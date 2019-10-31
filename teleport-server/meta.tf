@@ -18,8 +18,6 @@ data "aws_subnet" "teleport" {
 data "aws_ami" "teleport_ami" {
   count       = var.ami_id != null ? 0 : 1
   most_recent = true
-
-  name_regex = "^ebs-teleport-*"
-
-  owners = ["496014204152"]
+  name_regex  = "^ebs-teleport-${var.teleport_version != null ? "${var.teleport_version}-" : ""}*"
+  owners      = ["496014204152"]
 }
