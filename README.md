@@ -125,6 +125,7 @@ These are the requirements to apply this module:
 
 | Name | Description |
 |------|-------------|
+| teleport_cluster_name | Name of the teleport cluster |
 | teleport_server_fqdn | FQDN of the DNS record of the Teleport server. |
 | teleport_server_instance_id | Instance id of the Teleport server. |
 | teleport_server_instance_profile_arn | Instance profile ARN of the Teleport server. |

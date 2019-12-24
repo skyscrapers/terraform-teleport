@@ -23,6 +23,11 @@ output "teleport_server_fqdn" {
   value       = aws_route53_record.teleport.fqdn
 }
 
+output "teleport_cluster_name" {
+  description = "Name of the teleport cluster"
+  value       = local.teleport_cluster_name
+}
+
 output "teleport_server_instance_profile_id" {
   description = "Instance profile id of the Teleport server."
   value       = aws_iam_instance_profile.profile.id
