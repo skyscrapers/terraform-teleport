@@ -2,10 +2,10 @@
 
 runcmd:
   - [ systemctl, enable, teleport.service ]
+  - [ systemctl, enable, awslogsd.service ]
   - [ certbot, certonly, --server, "${acme_server}", -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
   - [ systemctl, start, teleport.service ]
-  - [ tar, xvf, /root/AgentDependencies.tar.gz, -C, /tmp/ ]
-  - [ python3 , /root/awslogs-agent-setup.py, -n, --region, ${teleport_dynamodb_region}, --dependency-path, /tmp/AgentDependencies, -c, /etc/awslogs/awslogs.conf ]
+  - [ systemctl, start, awslogsd.service ]
 
 write_files:
 - content: |
@@ -158,22 +158,28 @@ write_files:
   permissions: '0755'
 - content: |
     [general]
-    state_file = /var/awslogs/state/agent-state
+    state_file = /var/lib/awslogs/agent-state
     [teleport_audit_log]
     datetime_format = %b %d %H:%M:%S
     file = /var/lib/teleport/audit/events/*.log
     buffer_duration = 5000
     log_stream_name = {instance_id}
     initial_position = start_of_file
-    log_group_name = teleport_audit_log
+    log_group_name = ${audit_log_group_name}
     [teleport_log]
     datetime_format = %b %d %H:%M:%S
     file = /var/log/teleport.log
     buffer_duration = 5000
     log_stream_name = {instance_id}
     initial_position = start_of_file
-    log_group_name = teleport_log
+    log_group_name = ${teleport_log_group_name}
   path: /etc/awslogs/awslogs.conf
+- content: |
+    [plugins]
+    cwlogs = cwlogs
+    [default]
+    region = ${teleport_dynamodb_region}
+  path: /etc/awslogs/awscli.conf
 - content: |
     :programname, isequal, "teleport" /var/log/teleport.log
 

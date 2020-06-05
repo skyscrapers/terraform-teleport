@@ -54,6 +54,12 @@ variable "instance_type" {
   default     = "t3.small"
 }
 
+variable "instance_ebs_optimized" {
+  type        = bool
+  description = "If true, the launched EC2 instance will be EBS-optimized. Note that if this is not set on an instance type that is optimized by default then this will show as disabled but if the instance type is optimized by default then there is no need to set this and there is no effect to disabling it. See the [EBS Optimized section](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html) of the AWS User Guide for more information"
+  default     = null
+}
+
 variable "letsencrypt_email" {
   type        = string
   description = "Email to use to register to letsencrypt"
