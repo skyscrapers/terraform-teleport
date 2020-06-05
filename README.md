@@ -92,34 +92,42 @@ These are the requirements to apply this module:
 - Route53 zone
 - VPC and a subnet where to deploy the EC2 instance
 
+### Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
+| template | n/a |
+
 ### Available variables
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | string | `https://acme-v02.api.letsencrypt.org/directory` | no |
-| allowed_cli_cidr_blocks | CIDR blocks that are allowed to access the cli interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
-| allowed_node_cidr_blocks | CIDR blocks that are allowed to access the API interface in the `auth` server | list(string) | `["0.0.0.0/0"]` | no |
-| allowed_tunnel_cidr_blocks | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
-| allowed_web_cidr_blocks | CIDR blocks that are allowed to access the web interface of the `proxy` server | list(string) | `["0.0.0.0/0"]` | no |
-| ami_id | AMI id for the EC2 instance | string | `""` | no |
-| environment | The environment where this setup belongs to. Only for naming reasons | string | - | yes |
-| instance_type | Instance type for the EC2 instance | string | `"t3.small"` | no |
-| key_name | SSH key name for the EC2 instance | string | `null` | no |
-| letsencrypt_email | Email to use to register to letsencrypt | string | - | yes |
-| project | A project where this setup belongs to. Only for naming reasons | string | - | yes |
-| r53_zone | The Route53 zone where to add the Teleport DNS record | string | - | yes |
-| root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | bool | `true` | no |
-| root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | number | `16` | no |
-| root_vl_type | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | string | `"gp2"` | no |
-| subnet_id | Subnet id where the EC2 instance will be deployed | string | - | yes |
-| teleport_auth_tokens | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | list(string) | `[]` | no |
-| teleport_cluster_name | Name of the teleport cluster | string | `""` | no |
-| teleport_dynamodb_table | Name of the DynamoDB table to configure in Teleport | string | `""` | no |
-| teleport_log_output | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | string | `"stdout"` | no |
-| teleport_log_severity | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | string | `"ERROR"` | no |
-| teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | string | `"node"` | no |
-| teleport_subdomain | DNS subdomain that will be created for the teleport server | string | `"teleport"` | no |
-| teleport_version | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | string | `null` | no |
+|------|-------------|------|---------|:--------:|
+| environment | The environment where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
+| letsencrypt_email | Email to use to register to letsencrypt | `string` | n/a | yes |
+| project | A project where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
+| r53_zone | The Route53 zone where to add the Teleport DNS record | `string` | n/a | yes |
+| subnet_id | Subnet id where the EC2 instance will be deployed | `string` | n/a | yes |
+| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | `string` | `"https://acme-v02.api.letsencrypt.org/directory"` | no |
+| allowed_cli_cidr_blocks | CIDR blocks that are allowed to access the cli interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| allowed_node_cidr_blocks | CIDR blocks that are allowed to access the API interface in the `auth` server | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
+| allowed_tunnel_cidr_blocks | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| allowed_web_cidr_blocks | CIDR blocks that are allowed to access the web interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| ami_id | AMI id for the EC2 instance | `string` | `null` | no |
+| instance_ebs_optimized | If true, the launched EC2 instance will be EBS-optimized. Note that if this is not set on an instance type that is optimized by default then this will show as disabled but if the instance type is optimized by default then there is no need to set this and there is no effect to disabling it. See the [EBS Optimized section](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html) of the AWS User Guide for more information | `bool` | `null` | no |
+| instance_type | Instance type for the EC2 instance | `string` | `"t3.small"` | no |
+| key_name | SSH key name for the EC2 instance | `string` | `null` | no |
+| root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | `bool` | `true` | no |
+| root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | `number` | `16` | no |
+| root_vl_type | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | `string` | `"gp2"` | no |
+| teleport_auth_tokens | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | `list(string)` | `[]` | no |
+| teleport_cluster_name | Name of the teleport cluster | `string` | `null` | no |
+| teleport_dynamodb_table | Name of the DynamoDB table to configure in Teleport | `string` | `null` | no |
+| teleport_log_output | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | `string` | `"stdout"` | no |
+| teleport_log_severity | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | `string` | `"ERROR"` | no |
+| teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | `string` | `"node"` | no |
+| teleport_subdomain | DNS subdomain that will be created for the teleport server | `string` | `"teleport"` | no |
+| teleport_version | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | `string` | `null` | no |
 
 ### Outputs
 
