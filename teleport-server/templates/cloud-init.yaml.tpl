@@ -185,3 +185,6 @@ write_files:
 
     & stop
   path: /etc/rsyslog.d/teleport.conf
+- owner: root:root
+  content: "0 6 * * 1 root /usr/bin/certbot renew >/dev/null 2>&1\n"
+  path: /etc/cron.d/certbot
