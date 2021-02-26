@@ -35,14 +35,13 @@ data "template_cloudinit_config" "teleport" {
 
   part {
     content_type = "text/cloud-config"
-    content      = data.template_file.cloudinit_teleport.rendered
+    content      = local.cloudinit_teleport_template
   }
 }
 
-data "template_file" "cloudinit_teleport" {
-  template = file("${path.module}/templates/cloud-init.yaml.tpl")
-
-  vars = {
+locals {
+  cloudinit_teleport_template = templatefile("${path.module}/templates/cloud-init.yaml.tpl", 
+  {
     letsencrypt_email             = var.letsencrypt_email
     teleport_domain_name          = local.teleport_domain_name
     teleport_log_output           = var.teleport_log_output
@@ -59,5 +58,6 @@ data "template_file" "cloudinit_teleport" {
     instance_type                 = var.instance_type
     audit_log_group_name          = aws_cloudwatch_log_group.teleport_audit.name
     teleport_log_group_name       = aws_cloudwatch_log_group.teleport.name
-  }
+    additional_runcmds            = var.additional_runcmds
+  })
 }

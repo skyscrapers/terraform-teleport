@@ -142,3 +142,9 @@ variable "teleport_subdomain" {
   description = "DNS subdomain that will be created for the teleport server"
   default     = "teleport"
 }
+
+variable "additional_runcmds" {
+  type        = list(string)
+  description = "List of additonal commands for cloud-init to run on first boot. See the official [documentation for runcmd](https://cloudinit.readthedocs.io/en/latest/topics/examples.html#run-commands-on-first-boot) for more information"
+  default     = null
+}

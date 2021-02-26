@@ -7,6 +7,12 @@ runcmd:
   - [ systemctl, start, teleport.service ]
   - [ systemctl, start, awslogsd.service ]
 
+%{ if additional_runcmds != null }
+%{ for cmd in additional_runcmds }
+  - ${cmd}
+%{ endfor }
+%{ endif }
+
 write_files:
 - content: |
     ---

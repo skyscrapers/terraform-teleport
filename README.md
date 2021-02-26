@@ -128,6 +128,7 @@ These are the requirements to apply this module:
 | teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | `string` | `"node"` | no |
 | teleport_subdomain | DNS subdomain that will be created for the teleport server | `string` | `"teleport"` | no |
 | teleport_version | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | `string` | `null` | no |
+| additional_runcmds | List of additonal commands for cloud-init to run on first boot. See the official [documentation for runcmd](https://cloudinit.readthedocs.io/en/latest/topics/examples.html#run-commands-on-first-boot) for more information | `list(string)` | `null` | no |
 
 ### Outputs
 
