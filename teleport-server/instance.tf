@@ -14,6 +14,7 @@ resource "aws_instance" "teleport_instance" {
     volume_type           = var.root_vl_type
     volume_size           = var.root_vl_size
     delete_on_termination = var.root_vl_delete
+    encrypted             = var.root_vl_encrypted
   }
 
   tags = {
