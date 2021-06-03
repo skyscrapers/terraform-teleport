@@ -118,6 +118,7 @@ These are the requirements to apply this module:
 | instance_type | Instance type for the EC2 instance | `string` | `"t3.small"` | no |
 | key_name | SSH key name for the EC2 instance | `string` | `null` | no |
 | root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | `bool` | `true` | no |
+| root_vl_encrypted | Whether the root volume of the EC2 instance should be encrypted | `bool` | `true` | no |
 | root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | `number` | `16` | no |
 | root_vl_type | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | `string` | `"gp2"` | no |
 | teleport_auth_tokens | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | `list(string)` | `[]` | no |

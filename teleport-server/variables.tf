@@ -131,6 +131,12 @@ variable "root_vl_delete" {
   default     = true
 }
 
+variable "root_vl_encrypted" {
+  type        = bool
+  description = "Whether the root volume of the EC2 instance should be encrypted"
+  default     = true
+}
+
 variable "acme_server" {
   type        = string
   description = "ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server"
