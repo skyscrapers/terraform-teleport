@@ -148,3 +148,9 @@ variable "teleport_subdomain" {
   description = "DNS subdomain that will be created for the teleport server"
   default     = "teleport"
 }
+
+variable "log_retention_period" {
+  type        = number
+  description = "Amount of days to keep the logs"
+  default     = 30
+}
