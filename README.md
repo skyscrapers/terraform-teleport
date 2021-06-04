@@ -117,6 +117,7 @@ These are the requirements to apply this module:
 | instance_ebs_optimized | If true, the launched EC2 instance will be EBS-optimized. Note that if this is not set on an instance type that is optimized by default then this will show as disabled but if the instance type is optimized by default then there is no need to set this and there is no effect to disabling it. See the [EBS Optimized section](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html) of the AWS User Guide for more information | `bool` | `null` | no |
 | instance_type | Instance type for the EC2 instance | `string` | `"t3.small"` | no |
 | key_name | SSH key name for the EC2 instance | `string` | `null` | no |
+| log_retention_period | Amount of days to keep the logs | `number` | `30` | no |
 | root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | `bool` | `true` | no |
 | root_vl_encrypted | Whether the root volume of the EC2 instance should be encrypted | `bool` | `true` | no |
 | root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | `number` | `16` | no |
