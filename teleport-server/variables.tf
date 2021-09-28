@@ -137,12 +137,6 @@ variable "root_vl_encrypted" {
   default     = true
 }
 
-variable "acme_server" {
-  type        = string
-  description = "ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server"
-  default     = "https://acme-v02.api.letsencrypt.org/directory"
-}
-
 variable "teleport_subdomain" {
   type        = string
   description = "DNS subdomain that will be created for the teleport server"

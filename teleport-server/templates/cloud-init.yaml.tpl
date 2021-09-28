@@ -3,7 +3,6 @@
 runcmd:
   - [ systemctl, enable, teleport.service ]
   - [ systemctl, enable, awslogsd.service ]
-  - [ certbot, certonly, --server, "${acme_server}", -n, --agree-tos, --email, ${letsencrypt_email}, --dns-route53, -d, ${teleport_domain_name}, --deploy-hook, /usr/local/bin/teleport_enable_tls.sh ]
   - [ systemctl, start, teleport.service ]
   - [ systemctl, start, awslogsd.service ]
 
@@ -107,7 +106,7 @@ write_files:
           command: ['/bin/sh', '-c', '/usr/local/bin/teleport version | cut -d " " -f2']
           period: 24h0m0s
 
-    # This section configures the 'proxy servie'
+    # This section configures the 'proxy service'
     proxy_service:
       # Turns 'proxy' role on. Default is 'yes'
       enabled: yes
@@ -124,12 +123,30 @@ write_files:
 
       # The HTTPS listen address to serve the Web UI and also to authenticate the
       # command line (CLI) users via password+HOTP
+      # Also handles the PostgreSQL proxy if database access is enabled.
       web_listen_addr: 0.0.0.0:443
 
-      # TLS certificate for the HTTPS connection. Configuring these properly is
-      # critical for Teleport security.
-      #https_key_file: /etc/letsencrypt/live/${teleport_domain_name}/privkey.pem
-      #https_cert_file: /etc/letsencrypt/live/${teleport_domain_name}/fullchain.pem
+      # The DNS name of the proxy HTTPS endpoint as accessible by cluster users.
+      # Defaults to the proxy's hostname if not specified. If running multiple
+      # proxies behind a load balancer, this name must point to the load balancer
+      # See the "Public Addr" section for more details
+      # (https://goteleport.com/docs/admin-guide/#public-addr).
+      # If database access is enabled, Database clients will connect to the Proxy
+      # over this hostname.
+      # (https://goteleport.com/docs/database-access/architecture/#database-client-to-proxy)
+      public_addr: ${teleport_domain_name}:433
+
+      # Kubernetes proxy listen address.
+      kube_listen_addr: 0.0.0.0:3026
+
+      # Get an automatic certificate from Letsencrypt.org using ACME via TLS_ALPN-01 challenge.
+      # When using ACME, the cluster name must match the 'public_addr' of Teleport and
+      # the 'proxy_service' must be publicly accessible over port 443.
+      # Also set using the CLI command:
+      # 'teleport configure --acme --acme-email=email@example.com --cluster-name=tele.example.com -o file'
+      acme:
+        enabled: yes
+        email: ${letsencrypt_email}
   path: /etc/teleport.yaml
 - content: |
     [Unit]
@@ -147,15 +164,6 @@ write_files:
     [Install]
     WantedBy=multi-user.target
   path: /etc/systemd/system/teleport.service
-- content: |
-    #!/bin/sh
-    # Enable TLS certificate in teleport if not already enabled
-    sed -i '/https_key_file:/s/^\(\s*\)#/\1/g' /etc/teleport.yaml
-    sed -i '/https_cert_file:/s/^\(\s*\)#/\1/g' /etc/teleport.yaml
-    # Reload teleport
-    systemctl restart teleport.service
-  path: /usr/local/bin/teleport_enable_tls.sh
-  permissions: '0755'
 - content: |
     [general]
     state_file = /var/lib/awslogs/agent-state
@@ -185,6 +193,3 @@ write_files:
 
     & stop
   path: /etc/rsyslog.d/teleport.conf
-- owner: root:root
-  content: "0 6 * * 1 root /usr/bin/certbot renew >/dev/null 2>&1\n"
-  path: /etc/cron.d/certbot
