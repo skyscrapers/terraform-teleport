@@ -53,7 +53,6 @@ data "template_file" "cloudinit_teleport" {
     teleport_auth_tokens          = jsonencode(var.teleport_auth_tokens)
     teleport_cluster_name         = local.teleport_cluster_name
     teleport_session_recording    = var.teleport_session_recording
-    acme_server                   = var.acme_server
     recorded_sessions_bucket_name = aws_s3_bucket.sessions.id
     project                       = var.project
     environment                   = var.environment

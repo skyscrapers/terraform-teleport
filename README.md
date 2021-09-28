@@ -85,68 +85,115 @@ The server will use Letsencrypt to retrieve a valid certificate for the Teleport
 
 These are the requirements to apply this module:
 
-- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport, certbot (with the Route53 plugin) and CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter:
+- Teleport pre-built in an AMI: to avoid relying on external sources during boot time, all dependencies have to be present in the AMI, and that includes Teleport and the CloudWatch logs agent. Skyscrapers publishes and maintains [such an AMI](https://github.com/skyscrapers/server-images#teleport), and can be found with the filter:
   - `owner-id`: "496014204152"
   - `name`: "ebs-teleport-*"
   - `tag:project`: "teleport"
 - Route53 zone
 - VPC and a subnet where to deploy the EC2 instance
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
+
 ### Providers
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
-| template | n/a |
+| <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
+| <a name="provider_template"></a> [template](#provider_template) | n/a |
 
-### Available variables
+### Modules
+
+No modules.
+
+### Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudwatch_log_group.teleport](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_group.teleport_audit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_eip.teleport_public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_iam_instance_profile.profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role.role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_instance.teleport_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_route53_record.teleport](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.teleport_sub](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_s3_bucket.sessions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_public_access_block.sessions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_security_group.teleport_server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.internet_http_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.internet_https_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.ntp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_auth_from_nodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_auth_from_proxy_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_https_auth_to_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_https_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_le_http_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_le_https_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_nodes_from_proxy_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_proxy_to_auth_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_proxy_to_nodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_proxy_to_nodes_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_reverse_ssh_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_reverse_ssh_proxy_to_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_ssh_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_ami.teleport_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_iam_policy_document.teleport](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_route53_zone.root](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_subnet.teleport](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
+| [template_cloudinit_config.teleport](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config) | data source |
+| [template_file.cloudinit_teleport](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| environment | The environment where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
-| letsencrypt_email | Email to use to register to letsencrypt | `string` | n/a | yes |
-| project | A project where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
-| r53_zone | The Route53 zone where to add the Teleport DNS record | `string` | n/a | yes |
-| subnet_id | Subnet id where the EC2 instance will be deployed | `string` | n/a | yes |
-| acme_server | ACME server where to point `certbot` on the Teleport server to fetch an SSL certificate. Useful if you want to point to the letsencrypt staging server | `string` | `"https://acme-v02.api.letsencrypt.org/directory"` | no |
-| allowed_cli_cidr_blocks | CIDR blocks that are allowed to access the cli interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| allowed_node_cidr_blocks | CIDR blocks that are allowed to access the API interface in the `auth` server | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
-| allowed_tunnel_cidr_blocks | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| allowed_web_cidr_blocks | CIDR blocks that are allowed to access the web interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| ami_id | AMI id for the EC2 instance | `string` | `null` | no |
-| instance_ebs_optimized | If true, the launched EC2 instance will be EBS-optimized. Note that if this is not set on an instance type that is optimized by default then this will show as disabled but if the instance type is optimized by default then there is no need to set this and there is no effect to disabling it. See the [EBS Optimized section](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html) of the AWS User Guide for more information | `bool` | `null` | no |
-| instance_type | Instance type for the EC2 instance | `string` | `"t3.small"` | no |
-| key_name | SSH key name for the EC2 instance | `string` | `null` | no |
-| log_retention_period | Amount of days to keep the logs | `number` | `30` | no |
-| root_vl_delete | Whether the root volume of the EC2 instance should be destroyed on instance termination | `bool` | `true` | no |
-| root_vl_encrypted | Whether the root volume of the EC2 instance should be encrypted | `bool` | `true` | no |
-| root_vl_size | Volume size for the root volume of the EC2 instance, in gigabytes | `number` | `16` | no |
-| root_vl_type | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | `string` | `"gp2"` | no |
-| teleport_auth_tokens | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | `list(string)` | `[]` | no |
-| teleport_cluster_name | Name of the teleport cluster | `string` | `null` | no |
-| teleport_dynamodb_table | Name of the DynamoDB table to configure in Teleport | `string` | `null` | no |
-| teleport_log_output | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | `string` | `"stdout"` | no |
-| teleport_log_severity | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | `string` | `"ERROR"` | no |
-| teleport_session_recording | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | `string` | `"node"` | no |
-| teleport_subdomain | DNS subdomain that will be created for the teleport server | `string` | `"teleport"` | no |
-| teleport_version | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | `string` | `null` | no |
+| <a name="input_environment"></a> [environment](#input_environment) | The environment where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
+| <a name="input_letsencrypt_email"></a> [letsencrypt_email](#input_letsencrypt_email) | Email to use to register to letsencrypt | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input_project) | A project where this setup belongs to. Only for naming reasons | `string` | n/a | yes |
+| <a name="input_r53_zone"></a> [r53_zone](#input_r53_zone) | The Route53 zone where to add the Teleport DNS record | `string` | n/a | yes |
+| <a name="input_subnet_id"></a> [subnet_id](#input_subnet_id) | Subnet id where the EC2 instance will be deployed | `string` | n/a | yes |
+| <a name="input_allowed_cli_cidr_blocks"></a> [allowed_cli_cidr_blocks](#input_allowed_cli_cidr_blocks) | CIDR blocks that are allowed to access the cli interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_allowed_node_cidr_blocks"></a> [allowed_node_cidr_blocks](#input_allowed_node_cidr_blocks) | CIDR blocks that are allowed to access the API interface in the `auth` server | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
+| <a name="input_allowed_tunnel_cidr_blocks"></a> [allowed_tunnel_cidr_blocks](#input_allowed_tunnel_cidr_blocks) | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_allowed_web_cidr_blocks"></a> [allowed_web_cidr_blocks](#input_allowed_web_cidr_blocks) | CIDR blocks that are allowed to access the web interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_ami_id"></a> [ami_id](#input_ami_id) | AMI id for the EC2 instance | `string` | `null` | no |
+| <a name="input_instance_ebs_optimized"></a> [instance_ebs_optimized](#input_instance_ebs_optimized) | If true, the launched EC2 instance will be EBS-optimized. Note that if this is not set on an instance type that is optimized by default then this will show as disabled but if the instance type is optimized by default then there is no need to set this and there is no effect to disabling it. See the [EBS Optimized section](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSOptimized.html) of the AWS User Guide for more information | `bool` | `null` | no |
+| <a name="input_instance_type"></a> [instance_type](#input_instance_type) | Instance type for the EC2 instance | `string` | `"t3.small"` | no |
+| <a name="input_key_name"></a> [key_name](#input_key_name) | SSH key name for the EC2 instance | `string` | `null` | no |
+| <a name="input_log_retention_period"></a> [log_retention_period](#input_log_retention_period) | Amount of days to keep the logs | `number` | `30` | no |
+| <a name="input_root_vl_delete"></a> [root_vl_delete](#input_root_vl_delete) | Whether the root volume of the EC2 instance should be destroyed on instance termination | `bool` | `true` | no |
+| <a name="input_root_vl_encrypted"></a> [root_vl_encrypted](#input_root_vl_encrypted) | Whether the root volume of the EC2 instance should be encrypted | `bool` | `true` | no |
+| <a name="input_root_vl_size"></a> [root_vl_size](#input_root_vl_size) | Volume size for the root volume of the EC2 instance, in gigabytes | `number` | `16` | no |
+| <a name="input_root_vl_type"></a> [root_vl_type](#input_root_vl_type) | Volume type for the root volume of the EC2 instance. Can be `standard`, `gp2`, or `io1` | `string` | `"gp2"` | no |
+| <a name="input_teleport_auth_tokens"></a> [teleport_auth_tokens](#input_teleport_auth_tokens) | List of static tokens to configure in the Teleport server. **Note** that these tokens will be added "as-is" in the Teleport configuration, so they must be pre-fixed with the token type (e.g. `teleport_auth_tokens = ["node:sdf34asd7f832efhsdnfsjdfh3i24788923r"]`). See the official [documentation on static tokens](https://gravitational.com/teleport/docs/admin-guide/#static-tokens) for more info | `list(string)` | `[]` | no |
+| <a name="input_teleport_cluster_name"></a> [teleport_cluster_name](#input_teleport_cluster_name) | Name of the teleport cluster | `string` | `null` | no |
+| <a name="input_teleport_dynamodb_table"></a> [teleport_dynamodb_table](#input_teleport_dynamodb_table) | Name of the DynamoDB table to configure in Teleport | `string` | `null` | no |
+| <a name="input_teleport_log_output"></a> [teleport_log_output](#input_teleport_log_output) | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | `string` | `"stdout"` | no |
+| <a name="input_teleport_log_severity"></a> [teleport_log_severity](#input_teleport_log_severity) | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | `string` | `"ERROR"` | no |
+| <a name="input_teleport_session_recording"></a> [teleport_session_recording](#input_teleport_session_recording) | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | `string` | `"node"` | no |
+| <a name="input_teleport_subdomain"></a> [teleport_subdomain](#input_teleport_subdomain) | DNS subdomain that will be created for the teleport server | `string` | `"teleport"` | no |
+| <a name="input_teleport_version"></a> [teleport_version](#input_teleport_version) | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | `string` | `null` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| teleport_cluster_name | Name of the teleport cluster |
-| teleport_server_fqdn | FQDN of the DNS record of the Teleport server. |
-| teleport_server_instance_id | Instance id of the Teleport server. |
-| teleport_server_instance_profile_arn | Instance profile ARN of the Teleport server. |
-| teleport_server_instance_profile_id | Instance profile id of the Teleport server. |
-| teleport_server_instance_profile_name | Instance profile name of the Teleport server. |
-| teleport_server_private_ip | Private IP of the Teleport server. |
-| teleport_server_public_ip | Public IP of the Teleport server. |
-| teleport_server_role_arn | Role ARN of the Teleport server. |
-| teleport_server_role_id | Role id of the Teleport server. |
-| teleport_server_role_name | Role name of the Teleport server. |
-| teleport_server_sg_id | Security group id of the Teleport server. |
+| <a name="output_teleport_cluster_name"></a> [teleport_cluster_name](#output_teleport_cluster_name) | Name of the teleport cluster |
+| <a name="output_teleport_server_fqdn"></a> [teleport_server_fqdn](#output_teleport_server_fqdn) | FQDN of the DNS record of the Teleport server. |
+| <a name="output_teleport_server_instance_id"></a> [teleport_server_instance_id](#output_teleport_server_instance_id) | Instance id of the Teleport server. |
+| <a name="output_teleport_server_instance_profile_arn"></a> [teleport_server_instance_profile_arn](#output_teleport_server_instance_profile_arn) | Instance profile ARN of the Teleport server. |
+| <a name="output_teleport_server_instance_profile_id"></a> [teleport_server_instance_profile_id](#output_teleport_server_instance_profile_id) | Instance profile id of the Teleport server. |
+| <a name="output_teleport_server_instance_profile_name"></a> [teleport_server_instance_profile_name](#output_teleport_server_instance_profile_name) | Instance profile name of the Teleport server. |
+| <a name="output_teleport_server_private_ip"></a> [teleport_server_private_ip](#output_teleport_server_private_ip) | Private IP of the Teleport server. |
+| <a name="output_teleport_server_public_ip"></a> [teleport_server_public_ip](#output_teleport_server_public_ip) | Public IP of the Teleport server. |
+| <a name="output_teleport_server_role_arn"></a> [teleport_server_role_arn](#output_teleport_server_role_arn) | Role ARN of the Teleport server. |
+| <a name="output_teleport_server_role_id"></a> [teleport_server_role_id](#output_teleport_server_role_id) | Role id of the Teleport server. |
+| <a name="output_teleport_server_role_name"></a> [teleport_server_role_name](#output_teleport_server_role_name) | Role name of the Teleport server. |
+| <a name="output_teleport_server_sg_id"></a> [teleport_server_sg_id](#output_teleport_server_sg_id) | Security group id of the Teleport server. |
 
 ### Example
 
