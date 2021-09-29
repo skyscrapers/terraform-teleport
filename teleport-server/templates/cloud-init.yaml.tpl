@@ -134,7 +134,7 @@ write_files:
       # If database access is enabled, Database clients will connect to the Proxy
       # over this hostname.
       # (https://goteleport.com/docs/database-access/architecture/#database-client-to-proxy)
-      public_addr: ${teleport_domain_name}:433
+      public_addr: ${teleport_domain_name}:443
 
       # Kubernetes proxy listen address.
       kube_listen_addr: 0.0.0.0:3026
