@@ -56,6 +56,15 @@ resource "aws_security_group_rule" "teleport_reverse_ssh_proxy_from_world" {
   security_group_id = aws_security_group.teleport_server.id
 }
 
+resource "aws_security_group_rule" "teleport_kube_proxy_to_world" {
+  type              = "ingress"
+  from_port         = 3026
+  to_port           = 3026
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_kube_cidr_blocks
+  security_group_id = aws_security_group.teleport_server.id
+}
+
 resource "aws_security_group_rule" "teleport_https_proxy_from_world" {
   type              = "ingress"
   from_port         = 3080

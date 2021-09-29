@@ -101,6 +101,12 @@ variable "allowed_cli_cidr_blocks" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "allowed_kube_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR blocks that are allowed to access the kubernetes interface of the `proxy` server"
+  default     = ["0.0.0.0/0"]
+}
+
 variable "allowed_web_cidr_blocks" {
   type        = list(string)
   description = "CIDR blocks that are allowed to access the web interface of the `proxy` server"

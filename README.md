@@ -130,6 +130,7 @@ No modules.
 | [aws_security_group_rule.teleport_auth_from_proxy_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teleport_https_auth_to_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teleport_https_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.teleport_kube_proxy_to_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teleport_le_http_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teleport_le_https_proxy_from_world](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.teleport_nodes_from_proxy_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -157,6 +158,7 @@ No modules.
 | <a name="input_r53_zone"></a> [r53_zone](#input_r53_zone) | The Route53 zone where to add the Teleport DNS record | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet_id](#input_subnet_id) | Subnet id where the EC2 instance will be deployed | `string` | n/a | yes |
 | <a name="input_allowed_cli_cidr_blocks"></a> [allowed_cli_cidr_blocks](#input_allowed_cli_cidr_blocks) | CIDR blocks that are allowed to access the cli interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_allowed_kube_cidr_blocks"></a> [allowed_kube_cidr_blocks](#input_allowed_kube_cidr_blocks) | CIDR blocks that are allowed to access the kubernetes interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_allowed_node_cidr_blocks"></a> [allowed_node_cidr_blocks](#input_allowed_node_cidr_blocks) | CIDR blocks that are allowed to access the API interface in the `auth` server | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
 | <a name="input_allowed_tunnel_cidr_blocks"></a> [allowed_tunnel_cidr_blocks](#input_allowed_tunnel_cidr_blocks) | CIDR blocks that are allowed to access the reverse tunnel interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_allowed_web_cidr_blocks"></a> [allowed_web_cidr_blocks](#input_allowed_web_cidr_blocks) | CIDR blocks that are allowed to access the web interface of the `proxy` server | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
