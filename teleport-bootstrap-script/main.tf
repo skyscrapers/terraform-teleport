@@ -1,16 +1,3 @@
-data "template_file" "teleport_bootstrap_script" {
-  template = file("${path.module}/templates/metadata.tpl")
-
-  vars = {
-    function            = var.function
-    project             = var.project == "" ? "" : "-${var.project}"
-    environment         = var.environment == "" ? "" : "-${var.environment}"
-    include_instance_id = var.include_instance_id
-    auth_token          = var.auth_token
-    auth_server         = var.auth_server
-  }
-}
-
 locals {
   environment_label = var.environment == "" ? "" : "environment: ${var.environment}"
   project_label     = var.project == "" ? "" : "project: ${var.project}"
@@ -20,26 +7,30 @@ locals {
     local.project_label,
     local.function_label,
   ]
-}
 
-data "template_file" "teleport_config" {
-  template = file("${path.module}/templates/teleport.yaml.tpl")
+  teleport_bootstrap_script = templatefile("${path.module}/templates/metadata.tpl", {
+      function            = var.function
+      project             = var.project == "" ? "" : "-${var.project}"
+      environment         = var.environment == "" ? "" : "-${var.environment}"
+      include_instance_id = var.include_instance_id
+      auth_token          = var.auth_token
+      auth_server         = var.auth_server
+    }
+  )
 
-  vars = {
-    labels = indent(
-      4,
-      join(
-        "\n",
-        distinct(compact(concat(local.default_labels, var.additional_labels))),
-      ),
-    )
-  }
-}
+  teleport_config = templatefile("${path.module}/templates/teleport.yaml.tpl", {
+      labels = indent(
+        4,
+        join(
+          "\n",
+          distinct(compact(concat(local.default_labels, var.additional_labels))),
+        ),
+      )
+    }
+  )
 
-data "template_file" "teleport_config_cloudinit" {
-  template = file("${path.module}/templates/teleport-cloudinit.yaml.tpl")
-
-  vars = {
-    teleport_config = indent(4, data.template_file.teleport_config.rendered)
-  }
+  teleport_config_cloudinit = templatefile("${path.module}/templates/teleport-cloudinit.yaml.tpl", {
+      teleport_config = indent(4, local.teleport_config)
+    }
+  )
 }
