@@ -11,6 +11,8 @@
     ExecReload=/bin/kill -HUP $MAINPID
     PIDFile=/var/run/teleport.pid
     LimitNOFILE=65536
+    # https://github.com/gravitational/teleport/issues/2355
+    KillMode=process
 
     [Install]
     WantedBy=multi-user.target
