@@ -36,28 +36,22 @@ data "template_cloudinit_config" "teleport" {
 
   part {
     content_type = "text/cloud-config"
-    content      = data.template_file.cloudinit_teleport.rendered
-  }
-}
-
-data "template_file" "cloudinit_teleport" {
-  template = file("${path.module}/templates/cloud-init.yaml.tpl")
-
-  vars = {
-    letsencrypt_email             = var.letsencrypt_email
-    teleport_domain_name          = local.teleport_domain_name
-    teleport_log_output           = var.teleport_log_output
-    teleport_log_severity         = var.teleport_log_severity
-    teleport_dynamodb_region      = data.aws_region.current.name
-    teleport_dynamodb_table       = local.teleport_dynamodb_table
-    teleport_auth_tokens          = jsonencode(var.teleport_auth_tokens)
-    teleport_cluster_name         = local.teleport_cluster_name
-    teleport_session_recording    = var.teleport_session_recording
-    recorded_sessions_bucket_name = aws_s3_bucket.sessions.id
-    project                       = var.project
-    environment                   = var.environment
-    instance_type                 = var.instance_type
-    audit_log_group_name          = aws_cloudwatch_log_group.teleport_audit.name
-    teleport_log_group_name       = aws_cloudwatch_log_group.teleport.name
+    content = templatefile("${path.module}/templates/cloud-init.yaml.tpl", {
+      letsencrypt_email             = var.letsencrypt_email
+      teleport_domain_name          = local.teleport_domain_name
+      teleport_log_output           = var.teleport_log_output
+      teleport_log_severity         = var.teleport_log_severity
+      teleport_dynamodb_region      = data.aws_region.current.name
+      teleport_dynamodb_table       = local.teleport_dynamodb_table
+      teleport_auth_tokens          = jsonencode(var.teleport_auth_tokens)
+      teleport_cluster_name         = local.teleport_cluster_name
+      teleport_session_recording    = var.teleport_session_recording
+      recorded_sessions_bucket_name = aws_s3_bucket.sessions.id
+      project                       = var.project
+      environment                   = var.environment
+      instance_type                 = var.instance_type
+      audit_log_group_name          = aws_cloudwatch_log_group.teleport_audit.name
+      teleport_log_group_name       = aws_cloudwatch_log_group.teleport.name
+    })
   }
 }
