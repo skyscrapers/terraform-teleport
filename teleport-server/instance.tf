@@ -8,7 +8,7 @@ resource "aws_instance" "teleport_instance" {
   disable_api_termination     = "false"
   ebs_optimized               = var.instance_ebs_optimized
   associate_public_ip_address = "true"
-  user_data                   = data.template_cloudinit_config.teleport.rendered
+  user_data                   = data.cloudinit_config.teleport.rendered
 
   root_block_device {
     volume_type           = var.root_vl_type
@@ -30,7 +30,7 @@ resource "aws_eip" "teleport_public" {
   vpc      = true
 }
 
-data "template_cloudinit_config" "teleport" {
+data "cloudinit_config" "teleport" {
   gzip          = true
   base64_encode = true
 

@@ -62,7 +62,7 @@ ${teleport_service}
 ### Example
 
 ```tf
-data "template_cloudinit_config" "api_cloudinit" {
+data "cloudinit_config" "api_cloudinit" {
   gzip          = true
   base64_encode = true
 
@@ -119,7 +119,7 @@ These are the requirements to apply this module:
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
-| <a name="provider_template"></a> [template](#provider_template) | n/a |
+| <a name="provider_cloudinit"></a> [cloudinit](#provider_cloudinit) | n/a |
 
 ### Modules
 
@@ -163,8 +163,7 @@ No modules.
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_route53_zone.root](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [aws_subnet.teleport](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [template_cloudinit_config.teleport](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config) | data source |
-| [template_file.cloudinit_teleport](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
+| [cloudinit_config.teleport](https://registry.terraform.io/providers/hashicorp/cloudinit/latest/docs/data-sources/config) | data source |
 
 ### Inputs
 
