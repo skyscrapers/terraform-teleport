@@ -3,8 +3,10 @@
 set -e
 
 get_private_ip () {
-  PRIVATE_IP="$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)"
-  if [ $? != 0 ]; then
+  TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 30")
+  PRIVATE_IP="$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)"
+
+  if [ -z $PRIVATE_IP ]; then
     # hostname -I returns all IP addresses available in the server, grep will return the first private IP found
     PRIVATE_IP="$(hostname -I | tr ' ' '\n' | grep -m 1 -E '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)')"
   fi
