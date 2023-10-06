@@ -3,8 +3,9 @@
 set -e
 
 get_private_ip () {
-  PRIVATE_IP="$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)"
-  if [ $? != 0 ]; then
+  PRIVATE_IP="$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4)"
+
+  if [ -z $PRIVATE_IP ]; then
     # hostname -I returns all IP addresses available in the server, grep will return the first private IP found
     PRIVATE_IP="$(hostname -I | tr ' ' '\n' | grep -m 1 -E '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)')"
   fi
@@ -15,11 +16,14 @@ get_private_ip () {
 
 # Config /etc/teleport
 
+## Get token for IMDSv2
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 30")
+
 ## Get private IP for advertise_ip
 echo "ADVERTISE_IP=$(get_private_ip)" >> /etc/teleport
 
 ## Get instance ID (if possible)
-${include_instance_id ? "export INSTANCE_ID=-$(curl -s http://169.254.169.254/latest/meta-data/instance-id)" : ""}
+${include_instance_id ? "export INSTANCE_ID=-$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/instance-id)" : ""}
 
 ## Set the rest of the config
 echo "AUTH_TOKEN=${auth_token}" >> /etc/teleport

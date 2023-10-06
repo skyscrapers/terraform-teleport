@@ -7,10 +7,16 @@ ssh_service:
 
   commands:
     - name: teleport_version
-      command: ["/bin/bash", "-c", "/usr/local/bin/teleport version | cut -d' ' -f2"]
+      command:
+        ["/bin/bash", "-c", "/usr/local/bin/teleport version | cut -d' ' -f2"]
       period: 1h0m0s
     - name: instance_type
-      command: ["/usr/bin/curl", "-s", "http://169.254.169.254/latest/meta-data/instance-type"]
+      command:
+        [
+          "/bin/bash",
+          "-c",
+          'TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 30") && curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type',
+        ]
       period: 1h0m0s
 
   permit_user_env: false
