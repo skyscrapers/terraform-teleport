@@ -2,7 +2,8 @@ ssh_service:
   enabled: yes
   listen_addr: 0.0.0.0:3022
 
-  labels: ${labels}
+  labels:
+    ${labels}
 
   commands:
     - name: teleport_version
