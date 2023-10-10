@@ -6,6 +6,7 @@ runcmd:
   - [ systemctl, start, teleport.service ]
   - [ systemctl, start, awslogsd.service ]
 
+# Source: https://goteleport.com/docs/reference/config/
 write_files:
 - content: |
     ---
@@ -47,11 +48,16 @@ write_files:
       enabled: yes
 
       authentication:
-        # default authentication type. possible values are 'local', 'oidc' and 'saml'
-        # only local authentication (Teleport's own user DB) is supported in the open
-        # source version
-        type: local
-        # second_factor can be off, otp, or u2f
+        # default authentication type. possible values are 'local' and 'github'
+        # for Teleport Community Edition, plus 'oidc' and 'saml' for Enterprise.
+        # Only local authentication (Teleport's own user DB) & GitHub is
+        # supported in the open source version
+        type: ${teleport_auth_type}
+
+        # second_factor can be 'off', 'on', 'optional', 'otp' or 'webauthn'.
+        # - 'on' requires either otp or webauthn second factor.
+        # - 'optional' allows otp and webauthn second factor.
+        # - 'otp' and 'webauthn' require the corresponding second factor.
         second_factor: otp
 
       # IP and the port to bind to. Other Teleport nodes will be connecting to

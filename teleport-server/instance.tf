@@ -38,6 +38,7 @@ data "cloudinit_config" "teleport" {
     content_type = "text/cloud-config"
     content = templatefile("${path.module}/templates/cloud-init.yaml.tpl", {
       letsencrypt_email             = var.letsencrypt_email
+      teleport_auth_type            = var.teleport_auth_type
       teleport_domain_name          = local.teleport_domain_name
       teleport_log_output           = var.teleport_log_output
       teleport_log_severity         = var.teleport_log_severity
