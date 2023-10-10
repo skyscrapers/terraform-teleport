@@ -83,6 +83,12 @@ variable "teleport_auth_tokens" {
   default     = []
 }
 
+variable "teleport_auth_type" {
+  type        = string
+  description = "Default authentication type. Possible values are 'local' and 'github'"
+  default     = "local"
+}
+
 variable "teleport_session_recording" {
   type        = string
   description = "Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info"
