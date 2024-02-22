@@ -149,9 +149,9 @@ variable "root_vl_encrypted" {
   default     = true
 }
 
-variable "teleport_subdomain" {
+variable "teleport_hostname" {
   type        = string
-  description = "DNS subdomain that will be created for the teleport server"
+  description = "DNS hostname that will be created for the teleport server"
   default     = "teleport"
 }
 

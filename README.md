@@ -112,13 +112,15 @@ These are the requirements to apply this module:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.12 |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement_aws) | >= 4.0 |
 
 ### Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider_aws) | >= 4.0 |
+| <a name="provider_aws.route53"></a> [aws.route53](#provider_aws.route53) | >= 4.0 |
 | <a name="provider_cloudinit"></a> [cloudinit](#provider_cloudinit) | n/a |
 
 ### Modules
@@ -192,10 +194,10 @@ No modules.
 | <a name="input_teleport_auth_type"></a> [teleport_auth_type](#input_teleport_auth_type) | Default authentication type. Possible values are 'local' and 'github' | `string` | `"local"` | no |
 | <a name="input_teleport_cluster_name"></a> [teleport_cluster_name](#input_teleport_cluster_name) | Name of the teleport cluster | `string` | `null` | no |
 | <a name="input_teleport_dynamodb_table"></a> [teleport_dynamodb_table](#input_teleport_dynamodb_table) | Name of the DynamoDB table to configure in Teleport | `string` | `null` | no |
+| <a name="input_teleport_hostname"></a> [teleport_hostname](#input_teleport_hostname) | DNS hostname that will be created for the teleport server | `string` | `"teleport"` | no |
 | <a name="input_teleport_log_output"></a> [teleport_log_output](#input_teleport_log_output) | Teleport logging configuration, possible values are `stdout`, `stderr` and `syslog` | `string` | `"stdout"` | no |
 | <a name="input_teleport_log_severity"></a> [teleport_log_severity](#input_teleport_log_severity) | Teleport logging configuration, possible severity values are `INFO`, `WARN` and `ERROR` | `string` | `"ERROR"` | no |
 | <a name="input_teleport_session_recording"></a> [teleport_session_recording](#input_teleport_session_recording) | Setting for configuring session recording in Teleport. Check the [official documentation](https://gravitational.com/teleport/docs/admin-guide/#configuration) for more info | `string` | `"node"` | no |
-| <a name="input_teleport_subdomain"></a> [teleport_subdomain](#input_teleport_subdomain) | DNS subdomain that will be created for the teleport server | `string` | `"teleport"` | no |
 | <a name="input_teleport_version"></a> [teleport_version](#input_teleport_version) | Teleport version to use. Will be used to search for a compatible AMI if `ami_id` is `null`. If not set, will search for the newest AMI | `string` | `null` | no |
 
 ### Outputs
@@ -219,14 +221,38 @@ No modules.
 
 ```tf
 module "teleport_ec2" {
-  source                  = "github.com/skyscrapers/terraform-teleport//teleport-server?ref=3.0.0"
-  ami                     = "ami-9d6324e4"
-  teleport_auth_tokens    = ["${data.aws_kms_secret.teleport_tokens.trusted_cluster}", "${data.aws_kms_secret.teleport_tokens.node}"]
-  environment             = "${terraform.workspace}"
-  r53_zone                = "production.skyscrape.rs"
-  project                 = "int"
-  subnet_id               = "${data.terraform_remote_state.static.public_lb_subnets[0]}"
-  key_name                = "iuri"
+  source                  = "github.com/skyscrapers/terraform-teleport//teleport-server?ref=8.0.0"
+  project                    = "int"
+  environment                = "tools"
+  teleport_hostname          = "teleport"
+  r53_zone                   = "tools.example.com"
+  subnet_id                  = var.public_lb_subnets[0]
+  key_name                   = mykey
+
+  teleport_auth_tokens = sensitive(concat(
+    ["node:${random_password.node_token.result}"],
+    ["kube,app:${random_password.agent_token.result}"],
+  ))
+
+  providers = {
+    aws         = aws
+    aws.route53 = aws.route53
+  }
+}
+```
+
+### Migrating to >= 8.0.0
+
+Starting version 8.0.0 of the module, we introduced 2 breaking changes:
+
+- Renamed `teleport_subdomain` variable to `teleport_hostname`
+- Introduced the possibility to host the R53 zone in a different AWS account. If you want to keep the functionality as before, just point the `aws.route53` provider alias to the main `aws` one.
+
+```tf
+module "teleport_ec2" {
+  providers = {
+    aws.route53 = aws
+  }
 }
 ```
 
