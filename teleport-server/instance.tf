@@ -17,6 +17,12 @@ resource "aws_instance" "teleport_instance" {
     encrypted             = var.root_vl_encrypted
   }
 
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
   tags = {
     Name        = "teleport-${var.project}-${var.environment}"
     Stack       = "teleport"
