@@ -1,3 +1,5 @@
+** DEPRECATION NOTICE: We no longer maintain these modules. Please get in contact if you are interested taking over the codebase. **
+
 # terraform-teleport
 
 Terraform module to provision Teleport related resources.
